@@ -5,11 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.bea</groupId>
-        <artifactId>my-shop</artifactId>
+        <artifactId>bankapp</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.example</groupId>
     <artifactId>blocker</artifactId>
 
     <properties>
