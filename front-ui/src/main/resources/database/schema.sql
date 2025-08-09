@@ -1,0 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS front_ui;
+
+CREATE TABLE IF NOT EXISTS front_ui.test (
+    id SERIAL PRIMARY KEY
+);
