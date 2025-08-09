@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<form th:action="${'/signup'}" method="post">
+<form th:action="${'http://localhost:8080/account/signup'}" method="post">
 <table style="width:30%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
     <tr>
         <td colspan="2">
@@ -26,12 +26,6 @@
         <td style="font-weight:bold;">Пароль</td>
         <td>
             <input name="password" type="password" style="width:100%" required/>
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight:bold;">Повторите пароль</td>
-        <td>
-            <input name="confirm_password" type="password" style="width:100%" required/>
         </td>
     </tr>
     <tr>
