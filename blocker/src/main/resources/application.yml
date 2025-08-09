@@ -15,13 +15,13 @@ spring:
   config:
     import: "consul:"
   application:
-    name: exchange-generator            # Логическое имя сервиса A
+    name: blocker            # Логическое имя сервиса A
   cloud:
     consul:
       host: localhost          # Адрес Consul (по умолчанию localhost)
-      port: 8500               # Порт Consul (8500 по умолчанию
+      port: 8500               # Порт Consul (8500 по умолчанию)
       discovery:
-        service-name: exchange-generator  # Необязательно, по умолчанию берётся spring.application.name
+        service-name: blocker  # Необязательно, по умолчанию берётся spring.application.name
         health-check-path: /actuator/health   # Путь к health-check
         health-check-interval: 10s            # Интервал проверки
       config:
@@ -29,4 +29,14 @@ spring:
         prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
         defaultContext: application  # Контекст по умолчанию
 server:
-  port: 8050                   # Порт сервиса А (например, 8080)
+  port: 8020                   # Порт сервиса А (например, 8080)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans,health,info
+  endpoint:
+    beans:
+      enabled: true
+    health:
+      enabled: true

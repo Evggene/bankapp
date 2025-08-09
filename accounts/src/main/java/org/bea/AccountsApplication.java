@@ -5,14 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
+@EnableScheduling
 @EnableDiscoveryClient
-public class Main {
+public class AccountsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(AccountsApplication.class, args);
     }
 
     @Bean
@@ -20,5 +22,4 @@ public class Main {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
 }

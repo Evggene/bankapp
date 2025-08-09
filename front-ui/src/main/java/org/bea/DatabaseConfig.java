@@ -12,10 +12,9 @@ public class DatabaseConfig {
 
     @Bean
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        var populator = new ResourceDatabasePopulator();
         populator.addScript(new ClassPathResource("database/schema.sql"));
-
-        DataSourceInitializer initializer = new DataSourceInitializer();
+        var initializer = new DataSourceInitializer();
         initializer.setDataSource(dataSource);
         initializer.setDatabasePopulator(populator);
         return initializer;
