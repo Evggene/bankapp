@@ -1,0 +1,9 @@
+CREATE SCHEMA IF NOT EXISTS
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    login VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    name VARCHAR(100),
+    birthdate DATE
+);
