@@ -1,9 +1,10 @@
-CREATE SCHEMA IF NOT EXISTS
+CREATE SCHEMA IF NOT EXISTS accounts;
 
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    login VARCHAR(50) NOT NULL UNIQUE,
+CREATE TABLE IF NOT EXISTS accounts.user (
+    id UUID PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
     name VARCHAR(100),
+    enabled boolean,
     birthdate DATE
 );
