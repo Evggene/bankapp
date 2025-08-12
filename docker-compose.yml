@@ -57,6 +57,7 @@ services:
     build:
       context: ./accounts
     image: bankapp/accounts:latest
+    container_name: accounts
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -74,6 +75,7 @@ services:
     build:
       context: ./blocker
     image: bankapp/blocker:latest
+    container_name: blocker
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -91,6 +93,7 @@ services:
     build:
       context: ./cash
     image: bankapp/cash:latest
+    container_name: cash
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -108,6 +111,7 @@ services:
     build:
       context: ./exchange
     image: bankapp/exchange:latest
+    container_name: exchange
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -125,6 +129,7 @@ services:
     build:
       context: ./exchange-generator
     image: bankapp/exchange-generator:latest
+    container_name: exchange-generator
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -142,6 +147,7 @@ services:
     build:
       context: ./notifications
     image: bankapp/notifications:latest
+    container_name: notifications
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -159,6 +165,7 @@ services:
     build:
       context: ./transfer
     image: bankapp/transfer:latest
+    container_name: transfer
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -176,6 +183,7 @@ services:
     build:
       context: ./front-ui
     image: bankapp/front-ui:latest
+    container_name: front-ui
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
@@ -196,6 +204,7 @@ services:
     build:
       context: ./gateway
     image: bankapp/gateway:latest
+    container_name: gateway
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
       SPRING_DATASOURCE_USERNAME: user
