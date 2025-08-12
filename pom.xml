@@ -23,6 +23,7 @@
         <module>blocker</module>
         <module>notifications</module>
         <module>front-ui</module>
+        <module>gateway</module>
     </modules>
 
     <properties>

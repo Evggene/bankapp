@@ -1,8 +1,6 @@
 package org.bea.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.bea.SecurityService;
-import org.bea.domain.LoginRequest;
 import org.bea.domain.SignupRequest;
 import org.bea.domain.User;
 import org.bea.repository.UserRepository;

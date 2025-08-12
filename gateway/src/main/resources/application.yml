@@ -1,42 +1,22 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5431/bankapp
-    username: user
-    password: pass
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
   config:
     import: "consul:"
   application:
-    name: front-ui            # Логическое имя сервиса A
+    name: gateway            # Логическое имя сервиса A
   cloud:
     consul:
       host: localhost          # Адрес Consul (по умолчанию localhost)
       port: 8500               # Порт Consul (8500 по умолчанию)
       discovery:
-        service-name: front-ui  # Необязательно, по умолчанию берётся spring.application.name
+        service-name: gateway  # Необязательно, по умолчанию берётся spring.application.name
         health-check-path: /actuator/health   # Путь к health-check
         health-check-interval: 10s            # Интервал проверки
       config:
         enabled: true            # Включаем Consul Config для внешней конфигурации
         prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
         defaultContext: application  # Контекст по умолчанию
-    gateway:
-      mvc:
-        routes:
-          - id: backend-api
-            predicates:
-              - Path=/api/**      # только API
-            uri: http://localhost:9000
 server:
-  port: 8080                   # Порт сервиса А (например, 8080)
+  port: 8100                   # Порт сервиса А (например, 8080)
 management:
   endpoints:
     web:

@@ -13,8 +13,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class SignupRequest {
 
-    private String username;
+    private String login;
     private String password;
+    private String name;
+    private LocalDate birthdate;
 }

@@ -2,20 +2,21 @@ version: '3.8'
 
 services:
 
-#  consul:
-#    image: consul:1.15
-#    container_name: consul
-#    ports:
-#      - "8500:8500"
-#      - "8600:8600/udp"
-#    command: agent -server -bootstrap -ui -client=0.0.0.0
-#    volumes:
-#      - consul_data:/consul/data
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
+  consul:
+    image: consul:1.15
+    container_name: consul
+    command: agent -server -bootstrap -ui -client=0.0.0.0
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    volumes:
+      - consul_data:/consul/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   postgres:
     image: postgres:13
@@ -29,45 +30,186 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      test: ["CMD-SHELL", "pg_isready -U user -d bankapp"]
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
-#  keycloak:
-#    image: quay.io/keycloak/keycloak:26.1.3
-#    container_name: keycloak
-#    environment:
-#      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-#      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-#      KC_HTTP_PORT: 8100  # Меняем внутренний порт
-#    ports:
-#      - "8100:8100"
-#    command: start-dev
-#    depends_on:
-#      - postgres
-#    restart: unless-stopped
-#
-#  accounts:
-#    build:
-#      context: ./accounts
-#    container_name: accounts
-#    ports:
-#      - "8010:8010"
-#    depends_on:
-#      - postgres
-#    restart: unless-stopped
-#
-#  front-ui:
-#    build:
-#      context: ./front-ui
-#    container_name: front-ui
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - postgres
-#    restart: unless-stopped
-#
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.3
+    container_name: keycloak
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      KC_DB_USERNAME: user
+      KC_DB_PASSWORD: pass
+    command: start-dev
+    ports:
+      - "8101:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  accounts:
+    build:
+      context: ./accounts
+    image: bankapp/accounts:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8010:8010"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  blocker:
+    build:
+      context: ./blocker
+    image: bankapp/blocker:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8020:8020"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  cash:
+    build:
+      context: ./cash
+    image: bankapp/cash:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8030:8030"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  exchange:
+    build:
+      context: ./exchange
+    image: bankapp/exchange:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8040:8040"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  exchange-generator:
+    build:
+      context: ./exchange-generator
+    image: bankapp/exchange-generator:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8050:8050"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  notifications:
+    build:
+      context: ./notifications
+    image: bankapp/notifications:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8060:8060"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  transfer:
+    build:
+      context: ./transfer
+    image: bankapp/transfer:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - "8070:8070"
+    depends_on:
+      - postgres
+      - consul
+    restart: unless-stopped
+
+  front-ui:
+    build:
+      context: ./front-ui
+    image: bankapp/front-ui:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - consul
+      - keycloak
+      - gateway
+      - postgres
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: ./gateway
+    image: bankapp/gateway:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SERVER_PORT: 8100
+    ports:
+      - "8100:8100"
+    depends_on:
+      - consul
+      - postgres
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   consul_data:
