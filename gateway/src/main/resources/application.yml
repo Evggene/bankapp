@@ -38,12 +38,12 @@ spring:
             filters:
               - SetPath=/login
 
-          - id: accounts-signup
+          - id: accounts-service
             uri: lb://accounts
             predicates:
-              - Path=/accounts/signup
+              - Path=/accounts/**
             filters:
-              - RewritePath=/accounts/signup, /signup
+              - RewritePath=/accounts/(?<segment>.*), /${segment}
 server:
   port: 8080                   # Порт сервиса А (например, 8080)
 management:
