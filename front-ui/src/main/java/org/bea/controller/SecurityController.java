@@ -25,8 +25,4 @@ public class SecurityController {
         return "signup";
     }
 
-    @PostMapping(value = "/account/signup", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void signupDiag(@ModelAttribute SignupRequest signupRequest) {
-        System.out.println();
-    }
 }

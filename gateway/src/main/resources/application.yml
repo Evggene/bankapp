@@ -34,9 +34,9 @@ spring:
           - id: front-ui-login
             uri: lb://front-ui            # ВАЖНО: lb://, а не http://accounts:8080
             predicates:
-              - Path=/front-ui/login
+              - Path=/front-ui/**
             filters:
-              - SetPath=/login
+              - RewritePath=/front-ui/(?<segment>.*), /${segment}
 
           - id: accounts-service
             uri: lb://accounts
@@ -44,6 +44,13 @@ spring:
               - Path=/accounts/**
             filters:
               - RewritePath=/accounts/(?<segment>.*), /${segment}
+
+          - id: root-to-front-ui
+            uri: lb://front-ui
+            predicates:
+              - Path=/
+            filters:
+              - SetPath=/         # на целевом сервисе будет "/"
 server:
   port: 8080                   # Порт сервиса А (например, 8080)
 management:

@@ -4,13 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.bea.domain.SignupRequest;
 import org.bea.domain.User;
 import org.bea.repository.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AccountsController {
 
@@ -28,6 +33,12 @@ public class AccountsController {
                 .enabled(true)
                 .build();
         userRepository.save(newUser);
+    }
+
+    @GetMapping("/loadUser")
+    public User loadUser(@RequestParam(value = "user", required = false) String user) {
+        return userRepository.findByUsername(user)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + user));
     }
 
 }
