@@ -36,7 +36,7 @@ spring:
               - Path=/api/**      # только API
             uri: http://localhost:9000
 server:
-  port: 8080                   # Порт сервиса А (например, 8080)
+  port: 8060                   # Порт сервиса А (например, 8080)
 management:
   endpoints:
     web:

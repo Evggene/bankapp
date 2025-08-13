@@ -17,7 +17,7 @@ public class AccountsController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/account/signup")
+    @PostMapping("/signup")
     public void doSignup(SignupRequest signupRequest) {
         var newUser = User.builder()
                 .id(UUID.randomUUID())

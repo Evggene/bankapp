@@ -28,15 +28,34 @@ spring:
         enabled: true            # Включаем Consul Config для внешней конфигурации
         prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
         defaultContext: application  # Контекст по умолчанию
+    gateway:
+      mvc:
+        routes:
+          - id: front-ui-login
+            uri: lb://front-ui            # ВАЖНО: lb://, а не http://accounts:8080
+            predicates:
+              - Path=/front-ui/login
+            filters:
+              - SetPath=/login
+
+          - id: accounts-signup
+            uri: lb://accounts
+            predicates:
+              - Path=/accounts/signup
+            filters:
+              - RewritePath=/accounts/signup, /signup
 server:
-  port: 8100                   # Порт сервиса А (например, 8080)
+  port: 8080                   # Порт сервиса А (например, 8080)
 management:
   endpoints:
     web:
       exposure:
-        include: beans,health,info
+        include: health,info,loggers,gateway   # откроет /actuator/gateway
   endpoint:
-    beans:
-      enabled: true
-    health:
-      enabled: true
+    gateway:
+      enabled: true    # обычно и так true, но явно включим
+logging:
+  level:
+    org.springframework.cloud.gateway.server.mvc: TRACE
+    org.springframework.web.servlet.function: TRACE
+    org.springframework.web: DEBUG

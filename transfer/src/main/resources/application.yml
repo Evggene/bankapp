@@ -29,7 +29,7 @@ spring:
         prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
         defaultContext: application  # Контекст по умолчанию
 server:
-  port: 8070                   # Порт сервиса А (например, 8080)
+  port: 8090                   # Порт сервиса А (например, 8080)
 management:
   endpoints:
     web:
