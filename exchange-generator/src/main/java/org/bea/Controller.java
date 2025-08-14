@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 public class Controller {
 
-    @GetMapping("/api/rates")
+    @GetMapping("/getRates")
     public Collection<CurrencyRate> getRates() {
         return Store.currencyRates.values();
     }

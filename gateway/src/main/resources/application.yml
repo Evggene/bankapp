@@ -45,6 +45,13 @@ spring:
             filters:
               - RewritePath=/accounts/(?<segment>.*), /${segment}
 
+          - id: exchange-generator-service
+            uri: lb://exchange-generator
+            predicates:
+              - Path=/exchange-generator/**
+            filters:
+              - RewritePath=/exchange-generator/(?<segment>.*), /${segment}
+
           - id: root-to-front-ui
             uri: lb://front-ui
             predicates:

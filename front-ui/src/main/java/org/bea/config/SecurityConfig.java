@@ -23,11 +23,13 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/login", "/logout", "/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
+                        .defaultSuccessUrl("http://localhost:8080/front-ui/", true)
+                        .failureUrl("http://localhost:8080/front-ui/login?error=true")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);
