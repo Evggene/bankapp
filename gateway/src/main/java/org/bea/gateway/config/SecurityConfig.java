@@ -1,4 +1,4 @@
-package org.bea;
+package org.bea.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
