@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/**").hasAuthority("SCOPE_resource.read") //Require scope
+                                .requestMatchers("/**").hasAuthority("SCOPE_front_ui") //Require scope
                                 .anyRequest().authenticated() // All other requests need authentication
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt());
