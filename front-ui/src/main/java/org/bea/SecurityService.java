@@ -17,7 +17,7 @@ public class SecurityService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        var user = restTemplate.getForObject("http://accounts/loadUser?user=" + username, org.bea.domain.User.class);
+        var user = restTemplate.getForObject("http://gateway/accounts/loadUser?user=" + username, org.bea.domain.User.class);
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
