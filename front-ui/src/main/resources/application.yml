@@ -1,4 +1,17 @@
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8101/realms/myrealm
+        registration:
+          front_ui_client:
+            provider: keycloak
+            client-id: front_ui_client
+            client-secret: gVjFbaOeddk5kUx03Dia1Dg3C8j7IL5D
+            scope: front_ui
+            authorization-grant-type: client_credentials
   datasource:
     url: jdbc:postgresql://localhost:5431/bankapp
     username: user
