@@ -18,13 +18,14 @@ public class OAuth2ClientCredentialsConfig {
     @Bean
     OAuth2AuthorizedClientManager authorizedClientManager(
             ClientRegistrationRepository registrations,
-            OAuth2AuthorizedClientRepository clients) {
+            OAuth2AuthorizedClientService clientService) {
 
         var provider = OAuth2AuthorizedClientProviderBuilder.builder()
                 .clientCredentials()
                 .build();
 
-        var manager = new DefaultOAuth2AuthorizedClientManager(registrations, clients);
+        var manager = new AuthorizedClientServiceOAuth2AuthorizedClientManager(
+                registrations, clientService);
         manager.setAuthorizedClientProvider(provider);
         return manager;
     }

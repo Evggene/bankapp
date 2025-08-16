@@ -45,25 +45,25 @@ spring:
       mvc:
         routes:
           - id: front-ui-login
-            uri: lb://front-ui            # ВАЖНО: lb://, а не http://accounts:8080
+            uri: lb://front-ui
             predicates:
               - Path=/front-ui/**
             filters:
-              - RewritePath=/front-ui/(?<segment>.*), /${segment}
+              - RewritePath=/front-ui/(?<segment>.*),/${segment}
 
           - id: accounts-service
             uri: lb://accounts
             predicates:
               - Path=/accounts/**
             filters:
-              - RewritePath=/accounts/(?<segment>.*), /${segment}
+              - RewritePath=/accounts/(?<segment>.*),/${segment}
 
           - id: exchange-generator-service
             uri: lb://exchange-generator
             predicates:
               - Path=/exchange-generator/**
             filters:
-              - RewritePath=/exchange-generator/(?<segment>.*), /${segment}
+              - RewritePath=/exchange-generator/(?<segment>.*),/${segment}
 
           - id: root-to-front-ui
             uri: lb://front-ui
