@@ -58,6 +58,13 @@ spring:
               - Path=/
             filters:
               - SetPath=/         # на целевом сервисе будет "/"
+
+          - id: cash-service
+            uri: lb://cash
+            predicates:
+              - Path=/cash/**
+            filters:
+              - RewritePath=/cash/(?<segment>.*),/${segment}
 server:
   port: 8080                   # Порт сервиса А (например, 8080)
 management:
