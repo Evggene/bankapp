@@ -65,6 +65,13 @@ spring:
               - Path=/cash/**
             filters:
               - RewritePath=/cash/(?<segment>.*),/${segment}
+
+          - id: blocker-service
+            uri: lb://blocker
+            predicates:
+              - Path=/blocker/**
+            filters:
+              - RewritePath=/blocker/(?<segment>.*),/${segment}
 server:
   port: 8080                   # Порт сервиса А (например, 8080)
 management:
