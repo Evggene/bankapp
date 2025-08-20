@@ -18,7 +18,7 @@ public class BlockerService {
         String key = login + "|" + action;
 
         int current = counters.computeIfAbsent(key, k -> new AtomicInteger(0)).incrementAndGet();
-        boolean allowed = (current % 2 == 1);
+        boolean allowed = (current % 10 != 0);
         String reason = allowed ? "allowed (odd attempt #" + current + ")" : "blocked (even attempt #" + current + ")";
         return new BlockResponse(allowed, reason, current);
     }

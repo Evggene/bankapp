@@ -63,4 +63,27 @@ public class RestController {
         restTemplate.postForEntity("http://gateway/cash/user/" + login + "/getCash",
                 new HttpEntity<>(form, headers), Void.class, login);
     }
+
+    @PostMapping("/user/{login}/doTransfer")
+    public void doTransfer(@PathVariable String login,
+                           @RequestParam("from_currency") String fromCurrency,
+                           @RequestParam("to_currency") String toCurrency,
+                           @RequestParam("value") java.math.BigDecimal value,
+                           @RequestParam("to_login") String toLogin) {
+        String token = clientCredentialsToken.get();
+
+        var form = new org.springframework.util.LinkedMultiValueMap<String, String>();
+        form.add("from_currency", fromCurrency);
+        form.add("to_currency", toCurrency);
+        form.add("value", value.toPlainString());
+        form.add("to_login", toLogin);
+
+        var headers = new org.springframework.http.HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBearerAuth(token);
+
+        restTemplate.postForEntity("http://gateway/transfer/user/" + login + "/doTransfer",
+                new org.springframework.http.HttpEntity<>(form, headers),
+                Void.class);
+    }
 }
