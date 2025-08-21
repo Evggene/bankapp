@@ -8,6 +8,7 @@ import org.bea.service.TransferService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class TransferController {
 
     private final TransferService svc;
     private final TransferOperationRepository repo;
+    private final RestTemplate restTemplate;
 
     @PostMapping(value = "/user/{login}/doTransfer",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -31,11 +33,34 @@ public class TransferController {
                 form.getTo_currency(),
                 form.getValue());
 
+        // Уведомим notifications
+        notifyOperation(String.format(
+                "Перевод: %s → %s, %s %s → %s",
+                login,
+                form.getTo_login(),
+                form.getValue(),
+                form.getFrom_currency(),
+                form.getTo_currency()
+        ));
+
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/operations")
     public List<?> lastOperations() {
         return repo.findTop50ByOrderByTsDesc();
+    }
+
+    private void notifyOperation(String message) {
+        try {
+            restTemplate.postForEntity(
+                    "http://gateway/notifications/notify?operation={op}",
+                    null,
+                    Void.class,
+                    message
+            );
+        } catch (Exception ignored) {
+            // уведомление — best-effort
+        }
     }
 }

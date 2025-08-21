@@ -65,8 +65,9 @@
               });
           }, 5000);
         });
-    // intercept cash form to show alert on blocked operations
-function cashFormIntercept() {
+
+        // intercept cash form — БЕЗ локальных alert, уведомления показывает notifications
+        function cashFormIntercept() {
           const form = document.querySelector('form[action*="/front-ui/user/"][action$="/getCash"]');
           if (!form) return;
           form.addEventListener('submit', function(ev) {
@@ -80,20 +81,40 @@ function cashFormIntercept() {
             }
             fetch(actionUrl, { method: 'POST', body: formData })
               .then(async r => {
-                if (r.status === 409) {
-                  const text = await r.text();
-                  alert(text || 'Операция заблокирована (blocker).');
-                } else if (!r.ok) {
-                  const text = await r.text();
-                  alert('Ошибка: ' + text);
-                } else {
-                  alert('Операция выполнена');
+                // уведомления теперь приходят из notifications-пуллера
+                if (!r.ok) {
+                  const text = await r.text().catch(() => '');
+                  console.error('Ошибка операции:', text || r.status);
                 }
               })
-              .catch(err => alert('Сеть недоступна: ' + err));
+              .catch(err => console.error('Сеть недоступна:', err));
           });
         }
         window.addEventListener('load', cashFormIntercept);
+
+        // === ПУЛЛЕР УВЕДОМЛЕНИЙ ИЗ notifications ===
+        (function startNotificationsPolling() {
+          async function tick() {
+            try {
+              // идём через gateway на notifications
+              const resp = await fetch('http://localhost:8080/notifications/last', { cache: 'no-store' });
+              if (resp.status === 200) {
+                const msg = (await resp.text()).trim();
+                if (msg) alert(msg); // показываем только сообщения из notifications
+              }
+            } catch (e) {
+              // если notifications временно недоступен — не спамим пользователя
+              console.warn('notifications unavailable', e);
+            } finally {
+              setTimeout(tick, 2000); // опрос каждые ~2 секунды
+            }
+          }
+          if (document.readyState === 'loading') {
+            window.addEventListener('load', tick);
+          } else {
+            tick();
+          }
+        })();
     </script>
 
 </head>

@@ -15,13 +15,13 @@ spring:
   config:
     import: "consul:"
   application:
-    name: notification            # Логическое имя сервиса A
+    name: notifications            # Логическое имя сервиса A
   cloud:
     consul:
       host: localhost          # Адрес Consul (по умолчанию localhost)
       port: 8500               # Порт Consul (8500 по умолчанию)
       discovery:
-        service-name: notification  # Необязательно, по умолчанию берётся spring.application.name
+        service-name: notifications  # Необязательно, по умолчанию берётся spring.application.name
         health-check-path: /actuator/health   # Путь к health-check
         health-check-interval: 10s            # Интервал проверки
       config:
@@ -29,7 +29,7 @@ spring:
         prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
         defaultContext: application  # Контекст по умолчанию
 server:
-  port: 8060                   # Порт сервиса А (например, 8080)
+  port: 8090                   # Порт сервиса А (например, 8080)
 management:
   endpoints:
     web:
