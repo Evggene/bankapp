@@ -1,4 +1,4 @@
-package org.bea;
+package org.bea.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

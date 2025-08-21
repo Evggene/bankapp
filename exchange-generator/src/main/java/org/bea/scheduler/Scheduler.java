@@ -1,14 +1,12 @@
-package org.bea;
+package org.bea.scheduler;
 
+import org.bea.domain.Store;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class Scheduler {
