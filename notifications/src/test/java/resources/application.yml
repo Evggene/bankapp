@@ -1,0 +1,14 @@
+spring:
+  config:
+    import: ""
+
+  cloud:
+    consul:
+      enabled: false
+    loadbalancer:
+      enabled: false
+
+logging:
+  level:
+    root: WARN
+    org.springframework: WARN
