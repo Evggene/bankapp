@@ -1,6 +1,6 @@
 package org.bea;
 
-import org.bea.controller.FrontUiController;
+import org.bea.controller.LoginController;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = FrontUiController.class)
+@WebMvcTest(controllers = LoginController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class FrontUiControllerWebMvcTest {
+class LoginControllerWebMvcTest {
 
     @Autowired
     MockMvc mockMvc;

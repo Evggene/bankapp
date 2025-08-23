@@ -13,9 +13,4 @@ public class ExchangeApplication {
         SpringApplication.run(ExchangeApplication.class, args);
     }
 
-    @Bean
-    @LoadBalanced  // Делает RestTemplate "discovery-aware"
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

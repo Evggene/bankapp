@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 @Data
 public class CashFormRequest {
     @NotBlank
-    private String currency;   // from <select name="currency">
+    private String currency;
     @NotNull @DecimalMin("0.01")
-    private BigDecimal value;  // from <input name="value" type="number">
+    private BigDecimal value;
     @NotBlank
-    private String action;     // from <button name="action" value="PUT|GET">
+    private String action;
 }

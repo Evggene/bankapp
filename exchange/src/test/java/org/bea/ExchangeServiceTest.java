@@ -1,9 +1,11 @@
-package org.bea.service;
+package org.bea;
 
 import org.bea.api.dto.ConversionRequest;
 import org.bea.api.dto.ConversionResponse;
 import org.bea.domain.ConversionOperation;
 import org.bea.repo.ConversionOperationRepository;
+import org.bea.service.ExchangeService;
+import org.bea.service.RateClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

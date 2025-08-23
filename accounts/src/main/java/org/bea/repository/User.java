@@ -1,4 +1,4 @@
-package org.bea.domain;
+package org.bea.repository;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

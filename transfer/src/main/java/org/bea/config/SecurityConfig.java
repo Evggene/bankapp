@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
            .authorizeHttpRequests(reg -> reg
-               .requestMatchers("/actuator/**").hasAuthority("SCOPE_front_ui") //Require scope
+               .requestMatchers("/actuator/**").hasAuthority("SCOPE_front_ui")
                .requestMatchers("/user/**").authenticated()
                .anyRequest().authenticated()
            )
@@ -27,7 +27,6 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        // Настрой под свой Keycloak/OP
         return NimbusJwtDecoder.withJwkSetUri(
             "http://localhost:8101/realms/myrealm/protocol/openid-connect/certs"
         ).build();

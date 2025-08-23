@@ -25,8 +25,6 @@ class ExchangeControllerIT {
     @LocalServerPort int port;
     @Autowired TestRestTemplate rest;
     @Autowired ConversionOperationRepository repo;
-
-    // не выходим в exchange-generator
     @MockBean RateClient rateClient;
 
     @DynamicPropertySource

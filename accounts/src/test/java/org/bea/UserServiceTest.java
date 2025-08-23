@@ -1,6 +1,6 @@
 package org.bea;
 
-import org.bea.domain.User;
+import org.bea.repository.User;
 import org.bea.repository.UserRepository;
 import org.bea.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,6 @@ class UserServiceTest {
     void setUp() {
         userRepository = mock(UserRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
-        // Конструктор UserService аннотирован @RequiredArgsConstructor — создаём вручную:
         userService = new UserService(userRepository, passwordEncoder);
     }
 

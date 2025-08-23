@@ -1,42 +1,21 @@
-server:
-  port: 8070
-
 spring:
   application:
-    name: transfer
+    name: front-ui
+
   config:
     import: "consul:"
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        service-name: transfer
-        health-check-path: /actuator/health
-        health-check-interval: 10s
-  datasource:
-    url: jdbc:postgresql://localhost:5431/bankapp
-    username: user
-    password: pass
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
-logging:
-  level:
-    org.springframework.web: INFO
-
-app:
-  # Меняй на 'http://gateway' если дергаешь через docker network
-  gateway-base-url: http://localhost:8080
+spring.cloud.consul:
+  host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
+  port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+  discovery:
+    enabled: true
+    register: true
+    service-name: ${spring.application.name}
+    prefer-ip-address: true
+  config:
+    enabled: true
+    prefix: config
+    defaultContext: application
+    format: YAML
+    data-key: data

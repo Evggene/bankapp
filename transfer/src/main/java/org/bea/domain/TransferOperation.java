@@ -11,7 +11,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "operation", schema = "transfer")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TransferOperation {
     @Id
     private UUID id;

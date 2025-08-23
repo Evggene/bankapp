@@ -18,27 +18,18 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Интеграционные на моках (web slice): поднимается только MVC слой.
- * Сервис и секьюрити-зависимости замоканы.
- */
 @WithMockUser
 @WebMvcTest(controllers = AccountsController.class)
 class AccountsControllerWebMvcTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
-
-    // Нужны, чтобы поднялся SecurityConfig
     @MockBean
     private JwtDecoder jwtDecoder;
-
     @MockBean
     private PasswordEncoder passwordEncoder;
-
     @MockBean
     private UserRepository userRepository;
 

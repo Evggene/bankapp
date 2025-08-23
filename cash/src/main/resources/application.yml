@@ -1,42 +1,21 @@
-server:
-  port: 8030
-
 spring:
   application:
     name: cash
+
   config:
     import: "consul:"
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        service-name: cash
-        health-check-path: /actuator/health
-        health-check-interval: 10s
-      config:
-        enabled: true
-        prefix: config
-        defaultContext: application
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5431/bankapp}
-    username: ${SPRING_DATASOURCE_USERNAME:user}
-    password: ${SPRING_DATASOURCE_PASSWORD:pass}
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-
-logging:
-  level:
-    org.springframework.web: INFO
+spring.cloud.consul:
+  host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
+  port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+  discovery:
+    enabled: true
+    register: true
+    service-name: ${spring.application.name}
+    prefer-ip-address: true
+  config:
+    enabled: true
+    prefix: config
+    defaultContext: application
+    format: YAML
+    data-key: data

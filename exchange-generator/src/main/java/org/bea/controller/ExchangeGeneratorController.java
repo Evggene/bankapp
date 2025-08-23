@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-public class Controller {
+public class ExchangeGeneratorController {
 
     @GetMapping("/getRates")
     public Collection<CurrencyRate> getRates() {

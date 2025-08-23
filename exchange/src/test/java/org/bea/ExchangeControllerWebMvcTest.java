@@ -29,11 +29,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ExchangeController.class)
-@Import(SecurityConfig.class) // в нём csrf disabled и permitAll
+@Import(SecurityConfig.class)
 class ExchangeControllerWebMvcTest {
 
     @Autowired MockMvc mockMvc;
-
     @MockBean ExchangeService exchangeService;
     @MockBean ConversionOperationRepository repo;
 

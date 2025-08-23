@@ -1,4 +1,4 @@
-package org.bea;
+package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;

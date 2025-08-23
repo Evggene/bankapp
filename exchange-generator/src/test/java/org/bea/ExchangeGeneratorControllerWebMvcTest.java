@@ -1,6 +1,6 @@
 package org.bea;
 
-import org.bea.controller.Controller;
+import org.bea.controller.ExchangeGeneratorController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,9 +11,9 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = Controller.class)
-@AutoConfigureMockMvc(addFilters = false) // вырубим security-фильтры, чтобы не требовался JwtDecoder
-class ControllerWebMvcTest {
+@WebMvcTest(controllers = ExchangeGeneratorController.class)
+@AutoConfigureMockMvc(addFilters = false)
+class ExchangeGeneratorControllerWebMvcTest {
 
     @Autowired
     MockMvc mockMvc;

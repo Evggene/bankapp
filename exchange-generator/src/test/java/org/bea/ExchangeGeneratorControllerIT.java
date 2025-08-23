@@ -12,7 +12,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ControllerIT {
+class ExchangeGeneratorControllerIT {
 
     @LocalServerPort
     int port;
@@ -22,7 +22,6 @@ class ControllerIT {
 
     @DynamicPropertySource
     static void props(DynamicPropertyRegistry r) {
-        // Отключаем консул-конфиг в тестах, чтобы не требовалось его наличие
         r.add("spring.config.import", () -> "");
     }
 

@@ -22,15 +22,11 @@ public class CashController {
     public CashBalanceResponse handleForm(@PathVariable String login, @Valid CashFormRequest form) {
         String action = form.getAction();
         if ("PUT".equalsIgnoreCase(action)) {
-            notifyOperation(
-                    "Пополнение: " + login +
-                            " +" + form.getValue() + " " + form.getCurrency()
+            notifyOperation("Пополнение: " + login + " +" + form.getValue() + " " + form.getCurrency()
             );
             return svc.deposit(login, form.getCurrency(), form.getValue());
         } else if ("GET".equalsIgnoreCase(action)) {
-            notifyOperation(
-                    "Снятие: " + login +
-                            " -" + form.getValue() + " " + form.getCurrency()
+            notifyOperation("Снятие: " + login + " -" + form.getValue() + " " + form.getCurrency()
             );
             return svc.withdraw(login, form.getCurrency(), form.getValue());
         } else {
@@ -38,10 +34,6 @@ public class CashController {
         }
     }
 
-    /**
-     * Отправка уведомления в модуль notifications через Gateway.
-     * Используем самый простой вариант без токенов/ретраев: задача — максимально просто.
-     */
     private void notifyOperation(String message) {
         try {
             // Важно: идём через API шлюза, роут /notifications/** должен быть настроен.
@@ -52,7 +44,6 @@ public class CashController {
                     message
             );
         } catch (Exception ignored) {
-            // не роняем основной поток — уведомления не критичны
         }
     }
 }

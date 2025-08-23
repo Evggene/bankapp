@@ -26,7 +26,6 @@ public class OAuth2ClientManagerConfig {
         return manager;
     }
 
-    /** Удобный метод: получить Bearer-токен по registrationId = "gateway-client" */
     @Bean
     public java.util.function.Supplier<String> clientCredentialsTokenSupplier(OAuth2AuthorizedClientManager manager) {
         return () -> {

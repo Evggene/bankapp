@@ -25,21 +25,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-    @Bean
-    FilterRegistrationBean<FormContentFilter> formContentFilterOff() {
-        var reg = new FilterRegistrationBean<FormContentFilter>();
-        reg.setFilter(new FormContentFilter());
-        reg.setEnabled(false);
-        return reg;
-    }
-
-    @Bean
-    FilterRegistrationBean<HiddenHttpMethodFilter> hiddenOff() {
-        var reg = new FilterRegistrationBean<HiddenHttpMethodFilter>();
-        reg.setFilter(new HiddenHttpMethodFilter());
-        reg.setEnabled(false);
-        return reg;
-    }
-
 }

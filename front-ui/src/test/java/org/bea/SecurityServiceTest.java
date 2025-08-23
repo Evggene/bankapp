@@ -1,6 +1,6 @@
 package org.bea;
 
-import org.bea.SecurityService;
+import org.bea.service.SecurityService;
 import org.bea.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;

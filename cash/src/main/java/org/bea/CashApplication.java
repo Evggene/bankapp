@@ -12,10 +12,4 @@ public class CashApplication {
     public static void main(String[] args) {
         SpringApplication.run(CashApplication.class, args);
     }
-
-    @Bean
-    @LoadBalanced  // Делает RestTemplate "discovery-aware"
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

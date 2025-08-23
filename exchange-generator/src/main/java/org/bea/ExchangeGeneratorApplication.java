@@ -18,10 +18,4 @@ public class ExchangeGeneratorApplication {
     public static void main(String[] args) {
         SpringApplication.run(ExchangeGeneratorApplication.class, args);
     }
-
-    @Bean
-    @LoadBalanced  // Делает RestTemplate "discovery-aware"
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = BlockerController.class)
-@Import(SecurityConfig.class) // в проекте /check уже permitAll, так что 200 без юзера
+@Import(SecurityConfig.class)
 class BlockerControllerWebMvcTest {
 
     @Autowired

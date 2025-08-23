@@ -16,10 +16,4 @@ public class NotificationsApplication {
     public static void main(String[] args) {
         SpringApplication.run(NotificationsApplication.class, args);
     }
-
-    @Bean
-    @LoadBalanced  // Делает RestTemplate "discovery-aware"
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

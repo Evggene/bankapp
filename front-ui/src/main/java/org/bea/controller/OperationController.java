@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -21,9 +22,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
-@org.springframework.web.bind.annotation.RestController
+@RestController
 @RequiredArgsConstructor
-public class RestController {
+public class OperationController {
 
     private final Supplier<String> clientCredentialsToken;
     private final RestTemplate restTemplate;

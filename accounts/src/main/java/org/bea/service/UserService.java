@@ -1,7 +1,7 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bea.domain.User;
+import org.bea.repository.User;
 import org.bea.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;

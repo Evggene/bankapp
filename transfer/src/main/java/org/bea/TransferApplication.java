@@ -17,21 +17,5 @@ public class TransferApplication {
         SpringApplication.run(TransferApplication.class, args);
     }
 
-    @Bean
-    @LoadBalanced  // Делает RestTemplate "discovery-aware"
-    public RestTemplate restTemplate() {
-        RestTemplate rt = new RestTemplate();
-        rt.getInterceptors().add((req, body, exec) -> {
-            // не перетираем уже установленный Authorization, если он есть
-            if (!req.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                String token = SecurityUtils.currentBearerTokenOrNull();
-                if (token != null) {
-                    req.getHeaders().setBearerAuth(token);
-                }
-            }
-            return exec.execute(req, body);
-        });
-        return rt;
-    }
 }
 

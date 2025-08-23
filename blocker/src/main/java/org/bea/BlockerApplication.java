@@ -15,10 +15,4 @@ public class BlockerApplication {
     public static void main(String[] args) {
         SpringApplication.run(BlockerApplication.class, args);
     }
-
-    @Bean
-    @LoadBalanced  // Делает RestTemplate "discovery-aware"
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

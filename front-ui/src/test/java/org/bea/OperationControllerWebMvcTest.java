@@ -1,6 +1,6 @@
 package org.bea;
 
-import org.bea.controller.RestController;
+import org.bea.controller.OperationController;
 import org.bea.domain.CurrencyRate;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,9 +27,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = RestController.class)
+@WebMvcTest(controllers = OperationController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class RestControllerWebMvcTest {
+class OperationControllerWebMvcTest {
 
     @Autowired
     MockMvc mockMvc;

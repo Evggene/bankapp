@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/**").permitAll()
-                                .anyRequest().authenticated() // All other requests need authentication
+                                .anyRequest().authenticated()
                 );
         return http.build();
     }

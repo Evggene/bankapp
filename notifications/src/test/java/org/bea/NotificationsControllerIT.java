@@ -17,10 +17,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Интеграционные тесты "как в cash": Servlet стек, MockMvc, без security-фильтров и без внешних зависимостей.
- * Эндпоинты перебираются из набора распространённых путей для совместимости с разными реализациями notifications.
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc(addFilters = false)
 class NotificationsControllerIT {

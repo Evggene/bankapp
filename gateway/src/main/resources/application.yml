@@ -1,110 +1,21 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5431/bankapp
-    username: user
-    password: pass
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+  application:
+    name: gateway
+
   config:
     import: "consul:"
-  application:
-    name: gateway            # Логическое имя сервиса A
-  cloud:
-    consul:
-      host: localhost          # Адрес Consul (по умолчанию localhost)
-      port: 8500               # Порт Consul (8500 по умолчанию)
-      discovery:
-        service-name: gateway  # Необязательно, по умолчанию берётся spring.application.name
-        health-check-path: /actuator/health   # Путь к health-check
-        health-check-interval: 10s            # Интервал проверки
-      config:
-        enabled: true            # Включаем Consul Config для внешней конфигурации
-        prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
-        defaultContext: application  # Контекст по умолчанию
-    gateway:
-      mvc:
-        routes:
-          - id: front-ui-login
-            uri: lb://front-ui
-            predicates:
-              - Path=/front-ui/**
-            filters:
-              - RewritePath=/front-ui/(?<segment>.*),/${segment}
 
-          - id: accounts-service
-            uri: lb://accounts
-            predicates:
-              - Path=/accounts/**
-            filters:
-              - RewritePath=/accounts/(?<segment>.*),/${segment}
-
-          - id: exchange-generator-service
-            uri: lb://exchange-generator
-            predicates:
-              - Path=/exchange-generator/**
-            filters:
-              - RewritePath=/exchange-generator/(?<segment>.*),/${segment}
-
-          - id: root-to-front-ui
-            uri: lb://front-ui
-            predicates:
-              - Path=/
-            filters:
-              - SetPath=/         # на целевом сервисе будет "/"
-
-          - id: cash-service
-            uri: lb://cash
-            predicates:
-              - Path=/cash/**
-            filters:
-              - RewritePath=/cash/(?<segment>.*),/${segment}
-
-          - id: blocker-service
-            uri: lb://blocker
-            predicates:
-              - Path=/blocker/**
-            filters:
-              - RewritePath=/blocker/(?<segment>.*),/${segment}
-
-          - id: exchange-service
-            uri: lb://exchange
-            predicates:
-              - Path=/exchange/**
-            filters:
-              - RewritePath=/exchange/(?<segment>.*),/${segment}
-
-          - id: transfer-service
-            uri: lb://transfer
-            predicates:
-              - Path=/transfer/**
-            filters:
-              - RewritePath=/transfer/(?<segment>.*), /${segment}
-
-          - id: notifications-service
-            uri: lb://notifications
-            predicates:
-              - Path=/notifications/**
-            filters:
-              - RewritePath=/notifications/(?<segment>.*), /${segment}
-server:
-  port: 8080                   # Порт сервиса А (например, 8080)
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,loggers,gateway   # откроет /actuator/gateway
-  endpoint:
-    gateway:
-      enabled: true    # обычно и так true, но явно включим
-logging:
-  level:
-    org.springframework.cloud.gateway.server.mvc: TRACE
-    org.springframework.web.servlet.function: TRACE
-    org.springframework.web: DEBUG
+spring.cloud.consul:
+  host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
+  port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+  discovery:
+    enabled: true
+    register: true
+    service-name: ${spring.application.name}
+    prefer-ip-address: true
+  config:
+    enabled: true
+    prefix: config
+    defaultContext: application
+    format: YAML
+    data-key: data

@@ -28,11 +28,8 @@ class CashControllerWebMvcTest {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     CashService cashService;
-
-    // Notify в контроллере шлётся через RestTemplate → замокаем, чтобы не ходить наружу
     @MockBean
     RestTemplate restTemplate;
 
