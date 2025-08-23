@@ -1,6 +1,7 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bea.config.ResilientCall;
 import org.bea.config.TransferAppProperties;
 import org.bea.domain.TransferOperation;
 import org.bea.repo.TransferOperationRepository;
@@ -25,6 +26,7 @@ public class TransferService {
     private final TransferOperationRepository repo;
     private final TransferAppProperties props;
 
+    @ResilientCall
     @Transactional
     public UUID transfer(String fromLogin, String toLogin, String fromCurrency, String toCurrency, BigDecimal amount) {
         if (!allowedByBlocker(fromLogin, "TRANSFER", fromCurrency, amount)) {

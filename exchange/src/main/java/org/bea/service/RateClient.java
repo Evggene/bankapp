@@ -1,6 +1,7 @@
 package org.bea.service;
 
 import lombok.Data;
+import org.bea.config.ResilientCall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,7 @@ public class RateClient {
         private BigDecimal value;
     }
 
+    @ResilientCall
     public Map<String, BigDecimal> getRatesMap() {
         var url = "http://gateway/exchange-generator/getRates";
         var resp = restTemplate.getForObject(url, CurrencyRate[].class);

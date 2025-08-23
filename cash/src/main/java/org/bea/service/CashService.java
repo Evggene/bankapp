@@ -1,6 +1,7 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bea.config.ResilientCall;
 import org.bea.domain.CashAccount;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.repository.CashAccountRepository;
@@ -57,6 +58,7 @@ public class CashService {
         return new CashBalanceResponse(acc.getUsername(), acc.getCurrency(), acc.getBalance(), "Withdrawn");
     }
 
+    @ResilientCall
     private boolean allowedByBlocker(String login, String action, String currency, BigDecimal amount) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("login", login);

@@ -19,3 +19,18 @@ spring.cloud.consul:
     defaultContext: application
     format: YAML
     data-key: data
+
+resilience4j:
+  retry:
+    instances:
+      accountsToBlocker:
+        max-attempts: 5
+        wait-duration: 300ms
+
+  circuitbreaker:
+    instances:
+      accountsToBlocker:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 20
+        failure-rate-threshold: 40
+        wait-duration-in-open-state: 5s
