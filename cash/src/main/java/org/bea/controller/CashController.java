@@ -2,6 +2,7 @@ package org.bea.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.bea.config.SharedAppProperties;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.domain.dto.CashFormRequest;
 import org.bea.service.CashService;
@@ -16,6 +17,7 @@ public class CashController {
 
     private final CashService svc;
     private final RestTemplate restTemplate;
+    private final SharedAppProperties properties;
 
     @PostMapping(value = "/user/{login}/getCash",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -38,7 +40,7 @@ public class CashController {
         try {
             // Важно: идём через API шлюза, роут /notifications/** должен быть настроен.
             restTemplate.postForEntity(
-                    "http://gateway/notifications/notify?operation={op}",
+                    properties.getGatewayBaseUrl() + "/notifications/notify?operation={op}",
                     null,
                     Void.class,
                     message

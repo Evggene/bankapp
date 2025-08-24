@@ -1,9 +1,9 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bea.config.ResilientCall;
 import org.bea.domain.CashAccount;
 import org.bea.domain.dto.CashBalanceResponse;
+import org.bea.lib.ResilientCall;
 import org.bea.repository.CashAccountRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

@@ -1,9 +1,9 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bea.config.ResilientCall;
-import org.bea.config.TransferAppProperties;
+import org.bea.config.SharedAppProperties;
 import org.bea.domain.TransferOperation;
+import org.bea.lib.ResilientCall;
 import org.bea.repo.TransferOperationRepository;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class TransferService {
 
     private final RestTemplate restTemplate;
     private final TransferOperationRepository repo;
-    private final TransferAppProperties props;
+    private final SharedAppProperties props;
 
     @ResilientCall
     @Transactional

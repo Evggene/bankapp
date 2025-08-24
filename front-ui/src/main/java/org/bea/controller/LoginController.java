@@ -1,6 +1,7 @@
 package org.bea.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.bea.config.SharedAppProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ public class LoginController {
 
     private final Supplier<String> clientCredentialsToken;
     private final RestTemplate restTemplate;
+    private final SharedAppProperties properties;
 
     @GetMapping("/login")
     public String getLogin(@RequestParam(value = "error", required = false) boolean error, Model model) {
@@ -50,7 +52,7 @@ public class LoginController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(token);
 
-        restTemplate.postForEntity("http://gateway/accounts/user/" + login + "/editPassword",
+        restTemplate.postForEntity(properties.getGatewayBaseUrl() + "/accounts/user/" + login + "/editPassword",
                 new HttpEntity<>(form, headers), Void.class, login);
 
         ra.addFlashAttribute("message", "Пароль изменён");
@@ -71,7 +73,7 @@ public class LoginController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(token);
 
-        restTemplate.postForEntity("http://gateway/accounts/user/" + login + "/editUserAccounts",
+        restTemplate.postForEntity(properties.getGatewayBaseUrl() + "/accounts/user/" + login + "/editUserAccounts",
                 new HttpEntity<>(form, headers), Void.class, login);
 
         return "redirect:/main";

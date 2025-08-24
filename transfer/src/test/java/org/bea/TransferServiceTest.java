@@ -1,6 +1,6 @@
 package org.bea;
 
-import org.bea.config.TransferAppProperties;
+import org.bea.config.SharedAppProperties;
 import org.bea.domain.TransferOperation;
 import org.bea.repo.TransferOperationRepository;
 import org.bea.service.TransferService;
@@ -30,14 +30,14 @@ public class TransferServiceTest {
 
     private RestTemplate restTemplate;
     private TransferOperationRepository repo;
-    private TransferAppProperties props;
+    private SharedAppProperties props;
     private TransferService service;
 
     @BeforeEach
     void setUp() {
         restTemplate = mock(RestTemplate.class);
         repo = mock(TransferOperationRepository.class);
-        props = mock(TransferAppProperties.class);
+        props = mock(SharedAppProperties.class);
         when(props.getGatewayBaseUrl()).thenReturn("http://gateway");
         service = new TransferService(restTemplate, repo, props);
     }

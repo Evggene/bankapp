@@ -1,6 +1,6 @@
 spring:
   application:
-    name: front-ui
+    name: notifications
 
   config:
     import: "consul:"

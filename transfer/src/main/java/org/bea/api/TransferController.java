@@ -3,6 +3,7 @@ package org.bea.api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.bea.api.dto.TransferFormRequest;
+import org.bea.config.SharedAppProperties;
 import org.bea.repo.TransferOperationRepository;
 import org.bea.service.TransferService;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ public class TransferController {
     private final TransferService svc;
     private final TransferOperationRepository repo;
     private final RestTemplate restTemplate;
+    private final SharedAppProperties properties;
 
     @PostMapping(value = "/user/{login}/doTransfer",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -54,13 +56,12 @@ public class TransferController {
     private void notifyOperation(String message) {
         try {
             restTemplate.postForEntity(
-                    "http://gateway/notifications/notify?operation={op}",
+                    properties.getGatewayBaseUrl() + "/notifications/notify?operation={op}",
                     null,
                     Void.class,
                     message
             );
         } catch (Exception ignored) {
-            // уведомление — best-effort
         }
     }
 }

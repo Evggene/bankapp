@@ -23,7 +23,6 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/signup", "/loadUser").permitAll()
                                 .requestMatchers("/**").hasAuthority("SCOPE_front_ui")
-                                .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt());
         return http.build();

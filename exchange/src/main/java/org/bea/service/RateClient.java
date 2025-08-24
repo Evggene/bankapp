@@ -1,7 +1,8 @@
 package org.bea.service;
 
 import lombok.Data;
-import org.bea.config.ResilientCall;
+import lombok.RequiredArgsConstructor;
+import org.bea.config.SharedAppProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -12,10 +13,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class RateClient {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final SharedAppProperties properties;
 
     @Data
     public static class CurrencyRate {
@@ -24,9 +26,8 @@ public class RateClient {
         private BigDecimal value;
     }
 
-    @ResilientCall
     public Map<String, BigDecimal> getRatesMap() {
-        var url = "http://gateway/exchange-generator/getRates";
+        var url = properties.getGatewayBaseUrl() + "/exchange-generator/getRates";
         var resp = restTemplate.getForObject(url, CurrencyRate[].class);
         if (resp == null) return Map.of();
 

@@ -17,8 +17,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(reg -> reg
-                        .requestMatchers("/actuator/**").hasAuthority("SCOPE_front_ui") //Require scope
-                        .anyRequest().authenticated()
+                        .requestMatchers("/actuator").permitAll()
+                        .requestMatchers("/**").hasAuthority("SCOPE_front_ui")
                 )
                 .oauth2ResourceServer(o -> o.jwt());
         return http.build();

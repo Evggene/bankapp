@@ -1,5 +1,6 @@
 package org.bea;
 
+import org.bea.config.SharedAppProperties;
 import org.bea.controller.OperationController;
 import org.bea.domain.CurrencyRate;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = OperationController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@Import(SharedAppProperties.class)
 class OperationControllerWebMvcTest {
 
     @Autowired

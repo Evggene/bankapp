@@ -29,6 +29,11 @@
             <version>2.35.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.bea</groupId>
+            <artifactId>bankapp-lib</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

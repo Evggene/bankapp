@@ -1,6 +1,7 @@
 package org.bea.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.bea.config.SharedAppProperties;
 import org.bea.domain.CurrencyRate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -28,6 +29,7 @@ public class OperationController {
 
     private final Supplier<String> clientCredentialsToken;
     private final RestTemplate restTemplate;
+    private final SharedAppProperties properties;
 
     @GetMapping("/getRates")
     public Collection<CurrencyRate> getRates() {
@@ -36,7 +38,7 @@ public class OperationController {
         headers.setBearerAuth(token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<List<CurrencyRate>> response = restTemplate.exchange(
-                "http://gateway/exchange-generator/getRates",
+                properties.getGatewayBaseUrl() + "/exchange-generator/getRates",
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<>() {
@@ -61,7 +63,7 @@ public class OperationController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(token);
 
-        restTemplate.postForEntity("http://gateway/cash/user/" + login + "/getCash",
+        restTemplate.postForEntity(properties.getGatewayBaseUrl() + "/cash/user/" + login + "/getCash",
                 new HttpEntity<>(form, headers), Void.class, login);
     }
 
@@ -83,7 +85,7 @@ public class OperationController {
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBearerAuth(token);
 
-        restTemplate.postForEntity("http://gateway/transfer/user/" + login + "/doTransfer",
+        restTemplate.postForEntity(properties.getGatewayBaseUrl() + "/transfer/user/" + login + "/doTransfer",
                 new org.springframework.http.HttpEntity<>(form, headers),
                 Void.class);
     }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.bea.api.dto.ConversionRequest;
 import org.bea.api.dto.ConversionResponse;
 import org.bea.domain.ConversionOperation;
+import org.bea.lib.ResilientCall;
 import org.bea.repo.ConversionOperationRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class ExchangeService {
     private final RateClient rateClient;
     private final ConversionOperationRepository repo;
 
+    @ResilientCall
     public ConversionResponse convert(ConversionRequest req) {
         Map<String, BigDecimal> rates = rateClient.getRatesMap();
 

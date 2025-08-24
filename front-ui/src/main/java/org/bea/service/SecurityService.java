@@ -1,6 +1,8 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bea.config.SharedAppProperties;
+import org.bea.lib.ResilientCall;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,11 +15,13 @@ import org.springframework.web.client.RestTemplate;
 public class SecurityService implements UserDetailsService {
 
     private final RestTemplate restTemplate;
-    
+    private final SharedAppProperties properties;
+
+    @ResilientCall
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        var user = restTemplate.getForObject("http://gateway/accounts/loadUser?user=" + username, org.bea.domain.User.class);
+        var user = restTemplate.getForObject(properties.getGatewayBaseUrl() + "/accounts/loadUser?user=" + username, org.bea.domain.User.class);
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())

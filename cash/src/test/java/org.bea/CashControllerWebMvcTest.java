@@ -1,5 +1,6 @@
 package org.bea;
 
+import org.bea.config.SharedAppProperties;
 import org.bea.controller.CashController;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.domain.dto.CashFormRequest;
@@ -9,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
+import org.testcontainers.shaded.org.bouncycastle.pqc.crypto.saber.SABERParameters;
 
 import java.math.BigDecimal;
 
@@ -24,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = CashController.class)
 @AutoConfigureMockMvc(addFilters = false) // отключаем Security фильтры для простоты
+@Import(SharedAppProperties.class)
 class CashControllerWebMvcTest {
 
     @Autowired
