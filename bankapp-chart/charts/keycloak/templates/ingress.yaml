@@ -1,26 +1,11 @@
-{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "keycloak.fullname" . }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
-    nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-body-size: "16m"
 spec:
-  {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
-  {{- end }}
-  {{- if and .Values.ingress.tls.enabled .Values.ingress.tls.secretName }}
-  tls:
-    - hosts:
-        - {{ required "ingress.host is required when TLS is enabled" .Values.ingress.host }}
-      secretName: {{ .Values.ingress.tls.secretName }}
-  {{- end }}
   rules:
     - host: {{ required "Set keycloak.ingress.host (e.g. keycloak.<MINIKUBE_IP>.nip.io)" .Values.ingress.host }}
       http:
@@ -32,4 +17,3 @@ spec:
                 name: {{ include "keycloak.fullname" . }}
                 port:
                   number: {{ .Values.service.port }}
-{{- end }}

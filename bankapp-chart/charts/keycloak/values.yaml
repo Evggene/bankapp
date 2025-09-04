@@ -14,17 +14,16 @@ db:
   password: pass
 
 service:
-  port: 8080
+  port: 8101
   type: ClusterIP
 
 ingress:
-  enabled: true
   className: "nginx"
-  host: ""
+  host: keycloak.192.168.49.2.nip.io
   path: /
   tls:
     enabled: false
     secretName: ""
 
 proxy: edge
-hostname: ""
+hostname: keycloak.192.168.49.2.nip.io

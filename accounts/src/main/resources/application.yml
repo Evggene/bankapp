@@ -1,24 +1,30 @@
 spring:
+  cloud:
+    consul:
+      config:
+        enabled: false
   application:
     name: accounts
+  datasource:
+    url: jdbc:postgresql://localhost:5431/bankapp
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://keycloak:8101/realms/myrealm
 
-  config:
-    import: "consul:"
-
-spring.cloud.consul:
-  host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
-  port: ${SPRING_CLOUD_CONSUL_PORT:8500}
-  discovery:
-    enabled: true
-    register: true
-    service-name: ${spring.application.name}
-    prefer-ip-address: true
-  config:
-    enabled: true
-    prefix: config
-    defaultContext: application
-    format: YAML
-    data-key: data
+server:
+  port: 8010
 
 resilience4j:
   retry:
@@ -34,3 +40,17 @@ resilience4j:
         sliding-window-size: 20
         failure-rate-threshold: 40
         wait-duration-in-open-state: 5s
+
+  timelimiter:
+    instances:
+      default:
+        timeout-duration: 2s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,refresh
+logging:
+  level:
+    org.springframework.web: INFO
