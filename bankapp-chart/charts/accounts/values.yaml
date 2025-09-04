@@ -1,0 +1,31 @@
+image:
+  repository: accounts
+  tag: "0.0.1-SNAPSHOT"
+  pullPolicy: Never
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8010
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: accounts.192.168.49.2.nip.io
+  path: /
+  tls:
+    enabled: false
+    secretName: ""
+
+resources: {}
+
+postgres:
+  database: bankapp
+  username: user
+  password: pass
+  port: 5432
+
+keycloak:
+  realm: myrealm
+  port: 8101
