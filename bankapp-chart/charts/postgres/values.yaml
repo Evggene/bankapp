@@ -1,0 +1,13 @@
+image: "postgres:12.5"
+imagePullPolicy: IfNotPresent
+service:
+  port: 5432
+credentials:
+  database: bankapp
+  username: user
+  password: pass
+persistence:
+  enabled: true
+  size: 2Gi
+  storageClassName: ""
+resources: {}
