@@ -28,8 +28,8 @@ public class SecurityConfig {
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("http://localhost:8080/front-ui/", true)
-                        .failureUrl("http://localhost:8080/front-ui/login?error=true")
+                        .defaultSuccessUrl("/front-ui/", true)
+                        .failureUrl("/front-ui/login?error=true")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);

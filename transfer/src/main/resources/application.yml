@@ -53,3 +53,6 @@ resilience4j:
     instances:
       default:
         timeout-duration: 2s
+
+keycloak:
+  url: http://localhost:8101

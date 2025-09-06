@@ -5,6 +5,7 @@ import org.bea.domain.CashAccount;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.lib.ResilientCall;
 import org.bea.repository.CashAccountRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CashService {
+
+    @Value("${blocker.url}")
+    private String url;
 
     private final CashAccountRepository repo;
     private final RestTemplate restTemplate;
@@ -71,7 +75,7 @@ public class CashService {
 
         HttpEntity<Map<String, Object>> req = new HttpEntity<>(payload, headers);
 
-        var decision = restTemplate.postForObject("http://gateway/blocker/check", req, Map.class);
+        var decision = restTemplate.postForObject(url + "/check", req, Map.class);
         if (decision == null) return false;
         Object allowed = decision.get("allowed");
         return allowed instanceof Boolean ? (Boolean) allowed : false;

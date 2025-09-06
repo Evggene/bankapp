@@ -1,5 +1,6 @@
 package org.bea.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,9 +27,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withJwkSetUri(
-            "http://localhost:8101/realms/myrealm/protocol/openid-connect/certs"
-        ).build();
+    public JwtDecoder jwtDecoder(@Value("${keycloak.url}") String keycloakUrl) {
+        return NimbusJwtDecoder.withJwkSetUri(keycloakUrl + "/realms/myrealm/protocol/openid-connect/certs").build();
     }
 }
