@@ -17,13 +17,5 @@ service:
   port: 8101
   type: ClusterIP
 
-ingress:
-  className: "nginx"
-  host: keycloak.192.168.49.2.nip.io
-  path: /
-  tls:
-    enabled: false
-    secretName: ""
-
 proxy: edge
 hostname: keycloak.192.168.49.2.nip.io
