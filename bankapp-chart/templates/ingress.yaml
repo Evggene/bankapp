@@ -1,20 +1,25 @@
+# ---- frontui + keycloak (без rewrite) ----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-ingress
+  name: {{ .Release.Name }}-ingress-frontui
   namespace: {{ .Release.Namespace }}
-  {{- with .Values.ingress.annotations }}
+  {{- if or .Values.ingress.annotations .Values.ingress.className }}
   annotations:
-  {{ toYaml . | nindent 4 }}
+    {{- /* НЕ добавлять configuration-snippet здесь */ -}}
+      {{- with .Values.ingress.annotations }}
+      {{- toYaml . | nindent 4 }}
+      {{- end }}
   {{- end }}
 spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className | quote }}
   {{- end }}
   rules:
-    - host: {{ printf "front-ui.%s.nip.io" .Values.global.minikubeIp | quote }}
+    - host: {{ printf "bankapp.%s.nip.io" .Values.global.minikubeIp | quote }}
       http:
         paths:
+          # Корень -> front-ui (без rewrite)
           - path: /
             pathType: Prefix
             backend:
@@ -22,22 +27,8 @@ spec:
                 name: {{ printf "%s-front-ui" .Release.Name | quote }}
                 port:
                   number: {{ index .Values "front-ui" "service" "port" }}
-
-    - host: {{ printf "accounts.%s.nip.io" .Values.global.minikubeIp | quote }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ printf "%s-accounts" .Release.Name | quote }}
-                port:
-                  number: {{ .Values.accounts.service.port }}
-
-    - host: {{ printf "keycloak.%s.nip.io" .Values.global.minikubeIp | quote }}
-      http:
-        paths:
-          - path: /
+          # /keycloak -> keycloak (без rewrite; keycloak сам слушает /keycloak)
+          - path: /keycloak
             pathType: Prefix
             backend:
               service:
@@ -45,3 +36,34 @@ spec:
                 port:
                   number: {{ .Values.keycloak.service.port }}
 
+---
+# ---- accounts (с rewrite) ----
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress-backends
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/hsts: "false"
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+  {{- end }}
+  rules:
+    - host: {{ printf "bankapp.%s.nip.io" .Values.global.minikubeIp | quote }}
+      http:
+        paths:
+          # /accounts или /accounts/... -> accounts; внутрь сервиса идёт без /accounts
+          - path: /accounts(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ printf "%s-accounts" .Release.Name | quote }}
+                port:
+                  number: {{ .Values.accounts.service.port }}

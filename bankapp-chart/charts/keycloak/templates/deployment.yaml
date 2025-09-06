@@ -19,28 +19,40 @@ spec:
       initContainers:
         - name: wait-for-db
           image: postgres:12.5
-          command:
-            - sh
-            - -c
-            - >-
+          command: ["sh","-c"]
+          args:
+            - >
               until pg_isready -h {{ default (printf "%s-postgres" .Release.Name) .Values.db.host }} -p {{ .Values.db.port }};
-              do echo waiting for database; sleep 2; done
+              do echo "waiting for database"; sleep 2; done
       containers:
         - name: keycloak
-          image: {{ .Values.image }}
+          image: {{ .Values.image | quote }}
+          # для локалки удобно "start-dev"; в проде используйте "start"
           args: ["start-dev"]
           env:
-            - name: KC_DB
-              value: postgres
-            - name: KC_DB_URL
-              value: jdbc:postgresql://{{ default (printf "%s-postgres" .Release.Name) .Values.db.host }}:{{ .Values.db.port }}/{{ .Values.db.name }}
-            - name: KC_PROXY
-              value: {{ default "edge" .Values.proxy | quote }}
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_PROXY_HEADERS
+              value: "xforwarded"
+            # Внешний адрес С ПРЕФИКСОМ:
             - name: KC_HOSTNAME
-              value: {{ default "" .Values.hostname | quote }}
+              value: "http://bankapp.{{ .Values.global.minikubeIp }}.nip.io/keycloak"
+            # Включаем ВНУТРЕННИЙ путь у самого Keycloak:
+            - name: KC_HTTP_RELATIVE_PATH
+              value: "/keycloak"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: "false"
           envFrom:
             - secretRef:
                 name: {{ include "keycloak.fullname" . }}-secret
           ports:
-            - name: http
-              containerPort: 8080
+              - name: http
+                containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /keycloak/
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5

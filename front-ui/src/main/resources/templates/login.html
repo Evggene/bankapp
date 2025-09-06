@@ -14,7 +14,7 @@
                 Неверное имя пользователя или пароль
             </div>
             <!-- Форма входа -->
-            <form th:action="${'http://localhost:8080/front-ui/login'}" method="post">
+            <form th:action="@{/login}" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Имя пользователя</label>
                     <input type="text" class="form-control" id="username" name="username" required>
@@ -29,7 +29,7 @@
             </form>
 
             <div class="mt-3 text-center">
-                <a th:href="${'http://localhost:8080/front-ui/signup'}">Нет аккаунта? Зарегистрируйтесь</a>
+                <a th:href="@{/signup}">Нет аккаунта? Зарегистрируйтесь</a>
             </div>
         </div>
     </div>

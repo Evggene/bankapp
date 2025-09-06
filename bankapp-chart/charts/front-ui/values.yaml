@@ -22,7 +22,7 @@ config:
     oauth2:
       provider:
         keycloak:
-          issuerUri: "http://keycloak.192.168.49.2.nip.io/realms/myrealm"
+          issuerUri: "http://bankapp.192.168.49.2.nip.io/keycloak/realms/myrealm"
       registration:
         front_ui_client:
           clientId: "front_ui_client"

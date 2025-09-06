@@ -1,7 +1,7 @@
 image:
   repository: accounts
   tag: "0.0.1-SNAPSHOT"
-  pullPolicy: Never
+  pullPolicy: IfNotPresent
 
 replicaCount: 1
 
