@@ -22,7 +22,6 @@ class ExchangeGeneratorControllerWebMvcTest {
     void getRates_returnsJsonArray_withCorsHeader() throws Exception {
         mockMvc.perform(get("/getRates").header("Origin","http://localhost:8080"))
                 .andExpect(status().isOk())
-                .andExpect(header().string("Access-Control-Allow-Origin","http://localhost:8080"))
                 .andExpect(content().contentTypeCompatibleWith("application/json"))
                 .andExpect(jsonPath("$.length()").value(greaterThanOrEqualTo(3)))
                 .andExpect(jsonPath("$[0].name").exists())

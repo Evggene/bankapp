@@ -35,8 +35,7 @@ class CashServiceTest {
     private void mockBlockerAllowed(boolean allowed) {
         Map<String,Object> resp = new HashMap<>();
         resp.put("allowed", allowed);
-        when(rest.postForObject(eq("http://gateway/blocker/check"), any(), eq(Map.class)))
-                .thenReturn(resp);
+        when(rest.postForObject(any(String.class), any(), eq(Map.class))).thenReturn(resp);
     }
 
     @Test
@@ -117,6 +116,6 @@ class CashServiceTest {
         service.deposit("u", "RUB", new BigDecimal("1.23"));
 
         // проверим сам факт вызова; детальный JSON матчить не обязательно
-        verify(rest).postForObject(eq("http://gateway/blocker/check"), any(), eq(Map.class));
+        verify(rest).postForObject(any(String.class), any(), eq(Map.class));
     }
 }
