@@ -3,3 +3,14 @@ global:
 ingress:
   enabled: true
   className: "nginx"
+accounts:
+  service:
+    port: 8010
+
+keycloak:
+  service:
+    port: 8101
+
+front-ui:
+  service:
+    port: 8060

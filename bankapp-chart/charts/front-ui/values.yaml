@@ -1,0 +1,29 @@
+image:
+  repository: front-ui
+  tag: "0.0.1-SNAPSHOT"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources: {}
+
+# Application configuration surfaced via ConfigMap
+config:
+  spring:
+    application:
+      name: front-ui
+  shared:
+    gatewayBaseUrl: "http://gateway"   # override to your gateway service (e.g., http://bankapp-gateway)
+  security:
+    oauth2:
+      provider:
+        keycloak:
+          issuerUri: "http://keycloak.192.168.49.2.nip.io/realms/myrealm"
+      registration:
+        front_ui_client:
+          clientId: "front_ui_client"
+          clientSecret: "change-me"

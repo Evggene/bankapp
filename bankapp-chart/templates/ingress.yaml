@@ -3,14 +3,26 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress
   namespace: {{ .Release.Namespace }}
-  {{- if .Values.ingress.className }}
-  annotations: {}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+  {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className | quote }}
   {{- end }}
   rules:
+    - host: {{ printf "front-ui.%s.nip.io" .Values.global.minikubeIp | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ printf "%s-front-ui" .Release.Name | quote }}
+                port:
+                  number: {{ index .Values "front-ui" "service" "port" }}
+
     - host: {{ printf "accounts.%s.nip.io" .Values.global.minikubeIp | quote }}
       http:
         paths:
@@ -21,6 +33,7 @@ spec:
                 name: {{ printf "%s-accounts" .Release.Name | quote }}
                 port:
                   number: {{ .Values.accounts.service.port }}
+
     - host: {{ printf "keycloak.%s.nip.io" .Values.global.minikubeIp | quote }}
       http:
         paths:
@@ -31,3 +44,4 @@ spec:
                 name: {{ printf "%s-keycloak" .Release.Name | quote }}
                 port:
                   number: {{ .Values.keycloak.service.port }}
+
