@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = CashController.class)
-@AutoConfigureMockMvc(addFilters = false) // отключаем Security фильтры для простоты
+@AutoConfigureMockMvc(addFilters = false)
 @Import(SharedAppProperties.class)
 class CashControllerWebMvcTest {
 

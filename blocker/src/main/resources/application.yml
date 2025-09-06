@@ -1,21 +1,53 @@
+server:
+  port: 8020
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,refresh
+logging:
+  level:
+    org.springframework.web: INFO
+
 spring:
-  application:
-    name: blocker
+  datasource:
+    url: jdbc:postgresql://localhost:5431/bankapp
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
-  config:
-    import: "consul:"
+resilience4j:
+  retry:
+    instances:
+      default:
+        max-attempts: 3                # 1 основной + 2 повтора
+        wait-duration: 200ms
+        retry-exceptions:
+          - org.springframework.web.client.ResourceAccessException
+          - org.springframework.web.client.HttpServerErrorException
+        ignore-exceptions:
+          - org.springframework.web.client.HttpClientErrorException$BadRequest
 
-spring.cloud.consul:
-  host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
-  port: ${SPRING_CLOUD_CONSUL_PORT:8500}
-  discovery:
-    enabled: true
-    register: true
-    service-name: ${spring.application.name}
-    prefer-ip-address: true
-  config:
-    enabled: true
-    prefix: config
-    defaultContext: application
-    format: YAML
-    data-key: data
+  circuitbreaker:
+    instances:
+      default:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        record-exceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - org.springframework.web.client.ResourceAccessException
+
+  timelimiter:
+    instances:
+      default:
+        timeout-duration: 2s

@@ -196,26 +196,6 @@ services:
     depends_on:
       - consul
       - keycloak
-      - gateway
-      - postgres
-    restart: unless-stopped
-
-  gateway:
-    build:
-      context: ./gateway
-    image: bankapp/gateway:latest
-    container_name: gateway
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://spring_postgres:5432/bankapp
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: pass
-      SPRING_CLOUD_CONSUL_HOST: consul
-      SPRING_CLOUD_CONSUL_PORT: 8500
-      SERVER_PORT: 8100
-    ports:
-      - "8100:8100"
-    depends_on:
-      - consul
       - postgres
     restart: unless-stopped
 
