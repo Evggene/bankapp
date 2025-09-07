@@ -18,3 +18,5 @@ data:
               front_ui_client:
                 client-id: {{ .Values.config.security.oauth2.registration.front_ui_client.clientId | quote }}
                 client-secret: {{ .Values.config.security.oauth2.registration.front_ui_client.clientSecret | quote }}
+    shared:
+      gatewayBaseUrl: "http://bankapp.192.168.49.2.nip.io"

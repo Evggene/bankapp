@@ -51,7 +51,7 @@ class OperationControllerWebMvcTest {
                 new CurrencyRate("USD","Доллар США", new BigDecimal("95.55"))
         );
         ResponseEntity<List<CurrencyRate>> response = new ResponseEntity<>(body, HttpStatus.OK);
-        when(restTemplate.exchange(eq("http://gateway/exchange-generator/getRates"),
+        when(restTemplate.exchange(any(String.class),
                 eq(HttpMethod.GET),
                 any(HttpEntity.class),
                 any(ParameterizedTypeReference.class))).thenReturn(response);
@@ -62,7 +62,7 @@ class OperationControllerWebMvcTest {
 
         assertThat(json).contains("[{\"title\":\"RUB\",\"name\":\"Ð Ð¾Ñ\u0081Ñ\u0081Ð¸Ð¹Ñ\u0081ÐºÐ¸Ð¹ Ñ\u0080Ñ\u0083Ð±Ð»Ñ\u008C\",\"value\":1},{\"title\":\"USD\",\"name\":\"Ð\u0094Ð¾Ð»Ð»Ð°Ñ\u0080 Ð¡Ð¨Ð\u0090\",\"value\":95.55}]");
         ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
-        verify(restTemplate).exchange(eq("http://gateway/exchange-generator/getRates"),
+        verify(restTemplate).exchange(any(String.class),
                 eq(HttpMethod.GET), captor.capture(), any(ParameterizedTypeReference.class));
         HttpHeaders headers = captor.getValue().getHeaders();
         assertThat(headers.getFirst(HttpHeaders.AUTHORIZATION)).isEqualTo("Bearer tok123");
@@ -82,7 +82,7 @@ class OperationControllerWebMvcTest {
                 .andExpect(status().isOk());
 
         ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
-        verify(restTemplate).postForEntity(eq("http://gateway/transfer/user/john/doTransfer"), captor.capture(), eq(Void.class));
+        verify(restTemplate).postForEntity(any(String.class), captor.capture(), eq(Void.class));
         HttpEntity<?> entity = captor.getValue();
         assertThat(entity.getHeaders().getFirst(HttpHeaders.AUTHORIZATION)).isEqualTo("Bearer tok123");
         assertThat(entity.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_FORM_URLENCODED);

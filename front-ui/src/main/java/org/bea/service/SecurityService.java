@@ -22,6 +22,7 @@ public class SecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         var user = restTemplate.getForObject(
+                properties.getGatewayBaseUrl() +
                         "/accounts/loadUser?user=" +
                         username,
                 org.bea.domain.User.class);

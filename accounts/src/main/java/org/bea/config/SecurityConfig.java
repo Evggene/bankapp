@@ -20,10 +20,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/signup", "/loadUser").permitAll()
-                                .requestMatchers("/**").hasAuthority("SCOPE_front_ui")
+                                .requestMatchers("/hello", "/signup", "/accounts/signup", "/loadUser").permitAll()
+                                .requestMatchers("/user/**").hasAuthority("SCOPE_front_ui")
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt());
         return http.build();

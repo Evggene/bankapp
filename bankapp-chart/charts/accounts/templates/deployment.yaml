@@ -26,6 +26,11 @@ spec:
             - name: app-config
               mountPath: /config
           env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+              ports:
+                - containerPort: 8010
+                - containerPort: 5005
             - name: SPRING_CLOUD_DISCOVERY_ENABLED
               value: "false"
             - name: SPRING_CLOUD_SERVICE-REGISTRY_AUTO-REGISTRATION_ENABLED

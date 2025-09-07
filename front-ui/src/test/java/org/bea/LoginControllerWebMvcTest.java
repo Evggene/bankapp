@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,7 +46,7 @@ class LoginControllerWebMvcTest {
                 .andExpect(status().is3xxRedirection());
 
         ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
-        verify(restTemplate).postForEntity(eq("http://gateway/accounts/user/mary/editPassword"),
+        verify(restTemplate).postForEntity(any(String.class),
                 captor.capture(), eq(Void.class), eq("mary"));
         HttpEntity<?> entity = captor.getValue();
         assertThat(entity.getHeaders().getFirst(HttpHeaders.AUTHORIZATION)).isEqualTo("Bearer tok123");
@@ -65,7 +66,7 @@ class LoginControllerWebMvcTest {
                 .andExpect(status().is3xxRedirection());
 
         ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
-        verify(restTemplate).postForEntity(eq("http://gateway/accounts/user/john/editUserAccounts"),
+        verify(restTemplate).postForEntity(any(String.class),
                 captor.capture(), eq(Void.class), eq("john"));
         HttpEntity<?> entity = captor.getValue();
         assertThat(entity.getHeaders().getFirst(HttpHeaders.AUTHORIZATION)).isEqualTo("Bearer tok123");

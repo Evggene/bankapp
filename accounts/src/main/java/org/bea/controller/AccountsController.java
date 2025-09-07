@@ -26,6 +26,11 @@ public class AccountsController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
     @PostMapping("/signup")
     public void doSignup(SignupRequest signupRequest) {
         var newUser = User.builder()

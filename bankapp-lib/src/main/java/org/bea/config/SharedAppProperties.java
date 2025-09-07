@@ -8,5 +8,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @ConfigurationProperties(prefix = "shared")
 public class SharedAppProperties {
-    private String gatewayBaseUrl = "http://gateway";
+    private String gatewayBaseUrl = "http://bankapp.192.168.49.2.nip.io";
 }

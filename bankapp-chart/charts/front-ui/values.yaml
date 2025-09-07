@@ -1,6 +1,6 @@
 image:
   repository: front-ui
-  tag: "0.0.1-SNAPSHOT"
+  tag: "0.0.4-SNAPSHOT"
   pullPolicy: IfNotPresent
 
 replicaCount: 1
@@ -17,7 +17,7 @@ config:
     application:
       name: front-ui
   shared:
-    gatewayBaseUrl: "http://gateway"   # override to your gateway service (e.g., http://bankapp-gateway)
+    gatewayBaseUrl: "http://bankapp.192.168.49.2.nip.io"
   security:
     oauth2:
       provider:

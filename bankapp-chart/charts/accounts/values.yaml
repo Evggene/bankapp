@@ -1,6 +1,6 @@
 image:
   repository: accounts
-  tag: "0.0.1-SNAPSHOT"
+  tag: "0.0.2-SNAPSHOT"
   pullPolicy: IfNotPresent
 
 replicaCount: 1

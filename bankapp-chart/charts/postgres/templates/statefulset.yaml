@@ -31,10 +31,12 @@ spec:
             - name: data
               mountPath: /var/lib/postgresql/data
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+  {{ toYaml .Values.resources | indent 12 }}
   volumeClaimTemplates:
     - metadata:
         name: data
+        annotations:
+          "helm.sh/resource-policy": keep   # <<— ВАЖНО: сохранить PVC при helm uninstall
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
