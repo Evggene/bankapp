@@ -72,3 +72,10 @@ spec:
                 name: {{ .Release.Name }}-blocker
                 port:
                   number: {{ index .Values "blocker" "service" "port" | default 8040 }}
+          - path: /notifications/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-notifications
+                port:
+                  number: {{ index .Values "notifications" "service" "port" | default 8070 }}

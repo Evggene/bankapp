@@ -1,0 +1,13 @@
+image:
+  repository: notifications
+  tag: "0.0.1-SNAPSHOT"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8070
+
+resources: {}
+

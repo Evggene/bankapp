@@ -22,3 +22,7 @@ exchange-generator:
 blocker:
   service:
     port: 8040
+
+notifications:
+  service:
+    port: 8070
