@@ -58,3 +58,10 @@ spec:
                 name: {{ printf "%s-accounts" .Release.Name | quote }}
                 port:
                   number: {{ .Values.accounts.service.port }}
+          - path: /exchange-generator/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-exchange-generator
+                port:
+                  number: {{ index .Values "exchange-generator" "service" "port" | default 8050 }}

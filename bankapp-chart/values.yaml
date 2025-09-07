@@ -14,3 +14,7 @@ keycloak:
 front-ui:
   service:
     port: 8060
+
+exchange-generator:
+  service:
+    port: 8050

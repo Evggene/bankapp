@@ -7,10 +7,6 @@ metadata:
 data:
   application.yml: |
     spring:
-      cloud:
-        consul:
-          config:
-            enabled: false
       application:
         name: accounts
       datasource:

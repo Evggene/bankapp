@@ -11,6 +11,11 @@ import java.util.Collection;
 @RestController
 public class ExchangeGeneratorController {
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
     @GetMapping("/getRates")
     public Collection<CurrencyRate> getRates() {
         return Store.currencyRates.values();

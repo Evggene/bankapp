@@ -21,8 +21,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/actuator").permitAll()
-                                .requestMatchers("/**").hasAuthority("SCOPE_front_ui")
+                                .requestMatchers("/actuator", "/hello").permitAll()
+                                .requestMatchers("/getRates").hasAuthority("SCOPE_front_ui")
 
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt());

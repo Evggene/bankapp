@@ -1,0 +1,16 @@
+image:
+  repository: exchange-generator
+  tag: "0.0.1-SNAPSHOT"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8050
+
+resources: {}
+
+keycloak:
+  realm: myrealm
+  port: 8101
