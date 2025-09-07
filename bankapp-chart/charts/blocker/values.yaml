@@ -1,0 +1,17 @@
+image:
+  repository: blocker
+  tag: "0.0.1-SNAPSHOT"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8040  # default container port for blocker; override as needed
+
+resources: {}
+
+keycloak:
+  realm: myrealm
+  port: 8101
+

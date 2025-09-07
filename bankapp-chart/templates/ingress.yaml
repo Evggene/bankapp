@@ -65,3 +65,10 @@ spec:
                 name: {{ .Release.Name }}-exchange-generator
                 port:
                   number: {{ index .Values "exchange-generator" "service" "port" | default 8050 }}
+          - path: /blocker/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-blocker
+                port:
+                  number: {{ index .Values "blocker" "service" "port" | default 8040 }}
