@@ -11,6 +11,6 @@ data:
     spring.application.name=exchange-generator
     spring.cloud.consul.config.enabled=false
     logging.level.org.springframework.web=INFO
-    keycloak.url=http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}
+    keycloak.url=http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}/keycloak
     server.port=8050
     management.endpoints.web.exposure.include=health,info

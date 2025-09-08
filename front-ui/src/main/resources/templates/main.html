@@ -44,7 +44,7 @@
         // при загрузке страницы
         window.addEventListener('load', () => {
           // первый запрос — получаем список валют и первые курсы
-          fetch('front-ui/getRates')
+          fetch('/getRates')
             .then(r => r.json())
             .then(json => {
               latestRates = json;
@@ -54,7 +54,7 @@
 
           // дальше только обновляем таблицу
           setInterval(() => {
-            fetch('/front-ui/getRates')
+            fetch('/getRates')
               .then(r => r.json())
               .then(json => {
                 latestRates = json;

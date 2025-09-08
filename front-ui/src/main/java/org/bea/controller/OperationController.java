@@ -41,9 +41,7 @@ public class OperationController {
                 properties.getGatewayBaseUrl() + "/exchange-generator/getRates",
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
+                new ParameterizedTypeReference<>() {});
         return response.getBody();
     }
 
