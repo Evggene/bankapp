@@ -7,7 +7,7 @@ replicaCount: 1
 
 service:
   type: ClusterIP
-  port: 8070
+  port: 8090
 
 # Database settings
 database:

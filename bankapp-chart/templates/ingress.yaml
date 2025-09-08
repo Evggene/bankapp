@@ -93,3 +93,10 @@ spec:
                 name: {{ .Release.Name }}-exchange
                 port:
                   number: {{ index .Values "exchange" "service" "port" | default 8070 }}
+          - path: /transfer/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-transfer
+                port:
+                  number: {{ index .Values "transfer" "service" "port" | default 8090 }}

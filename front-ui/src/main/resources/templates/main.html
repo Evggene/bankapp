@@ -44,7 +44,7 @@
         // при загрузке страницы
         window.addEventListener('load', () => {
           // первый запрос — получаем список валют и первые курсы
-          fetch('http://bankapp.192.168.49.2.nip.io/getRates')
+          fetch('front-ui/getRates')
             .then(r => r.json())
             .then(json => {
               latestRates = json;
@@ -54,7 +54,7 @@
 
           // дальше только обновляем таблицу
           setInterval(() => {
-            fetch('http://localhost:8080/front-ui/getRates')
+            fetch('/front-ui/getRates')
               .then(r => r.json())
               .then(json => {
                 latestRates = json;
@@ -97,7 +97,7 @@
           async function tick() {
             try {
               // идём через gateway на notifications
-              const resp = await fetch('http://localhost:8080/notifications/last', { cache: 'no-store' });
+              const resp = await fetch('/notifications/last', { cache: 'no-store' });
               if (resp.status === 200) {
                 const msg = (await resp.text()).trim();
                 if (msg) alert(msg); // показываем только сообщения из notifications
@@ -133,7 +133,7 @@
 </a>
 <table style="width:70%;margin-left:auto;margin-right:auto;">
     <tr><td style="padding:2px;">
-        <form method="post" th:action="@{'/user/' + ${login} + '/editPassword'}" enctype="application/x-www-form-urlencoded">
+        <form method="post" th:action="@{/user/{login}/editPassword(login=${login})}" enctype="application/x-www-form-urlencoded">
             <table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
                 <tr>
                     <td style="font-weight:bold;">Логин</td>

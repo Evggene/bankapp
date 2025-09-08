@@ -34,3 +34,7 @@ cash:
 exchange:
   service:
     port: 8040
+
+transfer:
+  service:
+    port: 8090
