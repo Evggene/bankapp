@@ -9,7 +9,18 @@ data:
   application.yml: |-
     server:
       port: {{ .Values.service.port }}
-
+    spring:
+      datasource:
+        url: jdbc:postgresql://{{ include "accounts.postgresHost" . }}:{{ .Values.postgres.port }}/{{ .Values.postgres.database }}
+        username: {{ .Values.postgres.username }}
+        password: {{ .Values.postgres.password }}
+      jpa:
+        hibernate:
+          ddl-auto: none
+        show-sql: true
+        properties:
+          hibernate:
+            format_sql: true
     management:
       endpoints:
         web:

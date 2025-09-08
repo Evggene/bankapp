@@ -71,7 +71,7 @@ spec:
               service:
                 name: {{ .Release.Name }}-blocker
                 port:
-                  number: {{ index .Values "blocker" "service" "port" | default 8040 }}
+                  number: {{ index .Values "blocker" "service" "port" | default 8020 }}
           - path: /notifications/?(.*)
             pathType: ImplementationSpecific
             backend:
@@ -85,4 +85,11 @@ spec:
               service:
                 name: {{ .Release.Name }}-cash
                 port:
-                  number: {{ index .Values "cash" "service" "port" | default 8070 }}
+                  number: {{ index .Values "cash" "service" "port" | default 8030 }}
+          - path: /exchange/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-exchange
+                port:
+                  number: {{ index .Values "exchange" "service" "port" | default 8070 }}

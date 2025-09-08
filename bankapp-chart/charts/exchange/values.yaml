@@ -7,7 +7,7 @@ replicaCount: 1
 
 service:
   type: ClusterIP
-  port: 8020
+  port: 8040
 
 # Keycloak settings (for resource-server JWT validation)
 keycloak:
@@ -15,6 +15,12 @@ keycloak:
   port: 8101
   relativePath: "/keycloak"
   realm: myrealm
+
+postgres:
+  database: bankapp
+  username: user
+  password: pass
+  port: 5432
 
 # Exchange-Generator internal dependency
 generator:

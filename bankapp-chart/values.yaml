@@ -21,7 +21,7 @@ exchange-generator:
 
 blocker:
   service:
-    port: 8040
+    port: 8020
 
 notifications:
   service:
@@ -30,3 +30,7 @@ notifications:
 cash:
   service:
     port: 8030
+
+exchange:
+  service:
+    port: 8040
