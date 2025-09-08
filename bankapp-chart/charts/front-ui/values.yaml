@@ -1,6 +1,6 @@
 image:
   repository: front-ui
-  tag: "0.0.5-SNAPSHOT"
+  tag: "0.0.8-SNAPSHOT"
   pullPolicy: IfNotPresent
 
 replicaCount: 1
@@ -26,4 +26,9 @@ config:
       registration:
         front_ui_client:
           clientId: "front_ui_client"
-          clientSecret: "change-me"
+          clientSecret: "EMgj3OIlpjhemWPhujno1hn1q1AC1AbT"
+
+  debug:
+    enabled: true     # ← выключить = false
+    port: 5005        # локально будем форвардить на этот порт
+    suspend: "n"      # "y" — JVM ждёт подключение перед стартом

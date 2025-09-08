@@ -5,6 +5,15 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   application.yml: |
+    server:
+      servlet:
+        session:
+          cookie:
+            name: FRONTUISESSION
+            domain: bankapp.192.168.49.2.nip.io
+            path: /
+            same-site: Lax
+            secure: false   # без TLS
     spring:
       application:
         name: {{ .Values.config.spring.application.name | default "front-ui" | quote }}
@@ -13,10 +22,12 @@ data:
           client:
             provider:
               keycloak:
-                issuer-uri: {{ default (printf "http://keycloak.%s.nip.io/realms/myrealm" .Values.global.minikubeIp) .Values.config.security.oauth2.provider.keycloak.issuerUri | quote }}
+                issuer-uri: "http://bankapp.192.168.49.2.nip.io/keycloak/realms/myrealm"
             registration:
               front_ui_client:
-                client-id: {{ .Values.config.security.oauth2.registration.front_ui_client.clientId | quote }}
-                client-secret: {{ .Values.config.security.oauth2.registration.front_ui_client.clientSecret | quote }}
+                client-id: front_ui_client
+                client-secret: EMgj3OIlpjhemWPhujno1hn1q1AC1AbT
+                scope: front_ui
+                authorization-grant-type: client_credentials
     shared:
       gatewayBaseUrl: "http://bankapp.192.168.49.2.nip.io"

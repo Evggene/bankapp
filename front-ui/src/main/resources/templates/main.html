@@ -158,7 +158,7 @@
         </form>
     </td>
     <tr><td style="padding:2px;">
-        <form method="post" th:action="@{'/user/' + ${login} + '/editUserAccounts'}">
+        <form method="post" th:action="@{/user/{login}/editUserAccounts(login=${login})}">
             <table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
                 <tr th:if="${userAccountsErrors!=null}" th:each="userAccountsError : ${userAccountsErrors}">
                     <td style="color:red;" th:text="${userAccountsError}"/>
@@ -193,7 +193,7 @@
         </form>
     </td></tr>
     <tr><td style="padding:2px;">
-        <form method="post" th:action="${'http://localhost:8080/front-ui/user/'+login+'/getCash'}">
+        <form method="post" th:action="@{/user/{login}/getCash(login=${login})}">
             <table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
                 <tr th:if="${cashErrors!=null}" th:each="cashError : ${cashErrors}">
                     <td style="color:red;" th:text="${cashError}"/>
@@ -219,7 +219,7 @@
         </form>
     </td></tr>
     <tr><td style="padding:2px;">
-        <form method="post" th:action="${'http://localhost:8080/front-ui/user/'+login+'/doTransfer'}">
+        <form method="post" th:action="@{/user/{login}/doTransfer(login=${login})}">
             <table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
                 <tr th:if="${transferErrors!=null}" th:each="transferError : ${transferErrors}">
                     <td style="color:red;" th:text="${transferError}"/>
@@ -250,7 +250,7 @@
         </form>
     </td></tr>
     <tr><td style="padding:2px;">
-        <form method="post" th:action="${'http://localhost:8080/front-ui/user/'+login+'/doTransfer'}">
+        <form method="post" th:action="@{/user/{login}/doTransfer(login=${login})}">
             <table style="width:100%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
                 <tr th:if="${transferOtherErrors!=null}" th:each="transferOtherError : ${transferOtherErrors}">
                     <td style="color:red;" th:text="${transferOtherError}"/>
