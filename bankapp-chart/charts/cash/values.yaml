@@ -1,0 +1,39 @@
+image:
+  repository: cash
+  tag: 0.0.1-SNAPSHOT
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8030
+
+# Database settings (defaults aligned with postgres subchart)
+database:
+  host: ""        # if empty -> "<release>-postgres"
+  port: 5432
+  name: bankapp
+  username: user
+  password: pass
+
+# Keycloak settings
+keycloak:
+  host: ""        # if empty -> "<release>-keycloak"
+  port: 8101
+  relativePath: "/keycloak"
+  realm: myrealm
+
+# Blocker service
+blocker:
+  host: ""        # if empty -> "<release>-blocker"
+  port: 8040
+
+# Shared props (used by SharedAppProperties.gatewayBaseUrl)
+shared:
+  gatewayBaseUrl: ""  # if empty -> "http://bankapp.${global.minikubeIp}.nip.io"
+
+resources: {}
+
+ingress:
+  enabled: false

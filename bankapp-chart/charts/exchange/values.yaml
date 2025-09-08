@@ -1,0 +1,31 @@
+image:
+  repository: exchange
+  tag: 0.0.1-SNAPSHOT
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 8020
+
+# Keycloak settings (for resource-server JWT validation)
+keycloak:
+  host: ""               # if empty -> "<release>-keycloak"
+  port: 8101
+  relativePath: "/keycloak"
+  realm: myrealm
+
+# Exchange-Generator internal dependency
+generator:
+  host: ""               # if empty -> "<release>-exchange-generator"
+  port: 8050
+
+# Shared (for possible notifications or external callbacks via ingress)
+shared:
+  gatewayBaseUrl: ""     # if empty -> "http://bankapp.${global.minikubeIp}.nip.io"
+
+resources: {}
+
+ingress:
+  enabled: false

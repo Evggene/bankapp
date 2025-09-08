@@ -26,3 +26,7 @@ blocker:
 notifications:
   service:
     port: 8070
+
+cash:
+  service:
+    port: 8030

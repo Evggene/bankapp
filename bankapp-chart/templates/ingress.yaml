@@ -79,3 +79,10 @@ spec:
                 name: {{ .Release.Name }}-notifications
                 port:
                   number: {{ index .Values "notifications" "service" "port" | default 8070 }}
+          - path: /cash/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-cash
+                port:
+                  number: {{ index .Values "cash" "service" "port" | default 8070 }}

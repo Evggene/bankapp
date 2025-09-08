@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-cash-config
+  labels:
+    app.kubernetes.io/name: cash
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  application.yml: |-
+    server:
+      port: {{ .Values.service.port }}
+
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info,env,refresh
+
+    logging:
+      level:
+        org.springframework.web: INFO
+
+    spring:
+      datasource:
+        url: jdbc:postgresql://{{- if .Values.database.host }}{{ .Values.database.host }}{{- else }}{{ .Release.Name }}-postgres{{- end }}:{{ .Values.database.port }}/{{ .Values.database.name }}
+        username: {{ .Values.database.username | quote }}
+        password: {{ .Values.database.password | quote }}
+
+    keycloak:
+      url: "http://{{- if .Values.keycloak.host }}{{ .Values.keycloak.host }}{{- else }}{{ .Release.Name }}-keycloak{{- end }}:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
+
+    blocker:
+      url: "http://{{- if .Values.blocker.host }}{{ .Values.blocker.host }}{{- else }}{{ .Release.Name }}-blocker{{- end }}:{{ .Values.blocker.port }}"
+
+    shared:
+      gateway-base-url: "{{- if .Values.shared.gatewayBaseUrl }}{{ .Values.shared.gatewayBaseUrl }}{{- else }}http://bankapp.{{ .Values.global.minikubeIp }}.nip.io{{- end }}"
