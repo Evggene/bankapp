@@ -34,4 +34,3 @@ spec:
             - name: app-config
               mountPath: /config
           resources:
-{{ toYaml .Values.resources | indent 12 }}

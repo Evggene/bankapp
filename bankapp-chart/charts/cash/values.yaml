@@ -1,6 +1,6 @@
 image:
   repository: cash
-  tag: 0.0.1-SNAPSHOT
+  tag: 0.0.3-SNAPSHOT
   pullPolicy: IfNotPresent
 
 replicaCount: 1
@@ -27,7 +27,7 @@ keycloak:
 # Blocker service
 blocker:
   host: ""        # if empty -> "<release>-blocker"
-  port: 8040
+  port: 8020
 
 # Shared props (used by SharedAppProperties.gatewayBaseUrl)
 shared:

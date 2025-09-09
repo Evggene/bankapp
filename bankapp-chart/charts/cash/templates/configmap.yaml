@@ -27,10 +27,10 @@ data:
         password: {{ .Values.database.password | quote }}
 
     keycloak:
-      url: "http://{{- if .Values.keycloak.host }}{{ .Values.keycloak.host }}{{- else }}{{ .Release.Name }}-keycloak{{- end }}:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
+      url: http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}
 
     blocker:
-      url: "http://{{- if .Values.blocker.host }}{{ .Values.blocker.host }}{{- else }}{{ .Release.Name }}-blocker{{- end }}:{{ .Values.blocker.port }}"
+      url: http://{{ .Release.Name }}-blocker:{{ .Values.blocker.port }}/blocker
 
     shared:
-      gateway-base-url: "{{- if .Values.shared.gatewayBaseUrl }}{{ .Values.shared.gatewayBaseUrl }}{{- else }}http://bankapp.{{ .Values.global.minikubeIp }}.nip.io{{- end }}"
+      gateway-base-url: http://bankapp.{{ .Values.global.minikubeIp }}.nip.io

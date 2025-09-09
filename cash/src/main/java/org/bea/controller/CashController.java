@@ -38,7 +38,6 @@ public class CashController {
 
     private void notifyOperation(String message) {
         try {
-            // Важно: идём через API шлюза, роут /notifications/** должен быть настроен.
             restTemplate.postForEntity(
                     properties.getGatewayBaseUrl() + "/notifications/notify?operation={op}",
                     null,

@@ -1,5 +1,6 @@
 package org.bea;
 
+import org.bea.config.SharedAppProperties;
 import org.bea.domain.CashAccount;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.repository.CashAccountRepository;
@@ -24,12 +25,14 @@ class CashServiceTest {
     private CashAccountRepository repo;
     private RestTemplate rest;
     private CashService service;
+    private SharedAppProperties sharedAppProperties;
 
     @BeforeEach
     void setUp() {
+        sharedAppProperties = mock(SharedAppProperties.class);
         repo = mock(CashAccountRepository.class);
         rest = mock(RestTemplate.class);
-        service = new CashService(repo, rest);
+        service = new CashService(sharedAppProperties, repo, rest);
     }
 
     private void mockBlockerAllowed(boolean allowed) {

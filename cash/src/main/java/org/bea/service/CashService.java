@@ -1,6 +1,7 @@
 package org.bea.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bea.config.SharedAppProperties;
 import org.bea.domain.CashAccount;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.lib.ResilientCall;
@@ -23,9 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CashService {
 
-    @Value("${blocker.url}")
-    private String url;
-
+    private final SharedAppProperties sharedAppProperties;
     private final CashAccountRepository repo;
     private final RestTemplate restTemplate;
 
@@ -75,7 +74,7 @@ public class CashService {
 
         HttpEntity<Map<String, Object>> req = new HttpEntity<>(payload, headers);
 
-        var decision = restTemplate.postForObject(url + "/check", req, Map.class);
+        var decision = restTemplate.postForObject(sharedAppProperties.getGatewayBaseUrl() + "/blocker/check", req, Map.class);
         if (decision == null) return false;
         Object allowed = decision.get("allowed");
         return allowed instanceof Boolean ? (Boolean) allowed : false;

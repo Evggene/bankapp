@@ -27,11 +27,14 @@ spec:
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             ports:
               - containerPort: {{ .Values.service.port }}
+              - containerPort: 5010
+                name: debug
             env:
               - name: SPRING_CONFIG_ADDITIONAL_LOCATION
                 value: "file:/config/"
+              - name: JAVA_TOOL_OPTIONS
+                value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5010"
             volumeMounts:
               - name: app-config
                 mountPath: /config
-            resources:
-  {{ toYaml .Values.resources | indent 12 }}
+

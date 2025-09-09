@@ -27,11 +27,9 @@ data:
         password: {{ .Values.database.password | quote }}
 
     keycloak:
-      url: "http://{{- if .Values.keycloak.host }}{{ .Values.keycloak.host }}{{- else }}{{ .Release.Name }}-keycloak{{- end }}:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
+      url: "http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
 
-    # В библиотеке SharedAppProperties используется префикс 'shared'
     shared:
       gateway-base-url: "{{- if .Values.shared.gatewayBaseUrl }}{{ .Values.shared.gatewayBaseUrl }}{{- else }}http://bankapp.{{ .Values.global.minikubeIp }}.nip.io{{- end }}"
-    # На случай если где-то в модуле осталась ссылка app.gateway-base-url
     app:
       gateway-base-url: "{{- if .Values.shared.gatewayBaseUrl }}{{ .Values.shared.gatewayBaseUrl }}{{- else }}http://bankapp.{{ .Values.global.minikubeIp }}.nip.io{{- end }}"

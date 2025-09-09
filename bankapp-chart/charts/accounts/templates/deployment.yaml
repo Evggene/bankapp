@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: {{ include "accounts.fullname" . }}
   labels:
-    {{- include "accounts.labels" . | nindent 4 }}
+    app.kubernetes.io/name: blocker
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -31,14 +32,6 @@ spec:
               ports:
                 - containerPort: 8010
                 - containerPort: 5005
-            - name: SPRING_CLOUD_DISCOVERY_ENABLED
-              value: "false"
-            - name: SPRING_CLOUD_SERVICE-REGISTRY_AUTO-REGISTRATION_ENABLED
-              value: "false"
-            - name: SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED
-              value: "false"
-            - name: SPRING_CLOUD_CONSUL_CONFIG_ENABLED
-              value: "false"
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: "file:/config/"
             - name: JAVA_TOOL_OPTIONS
