@@ -13,9 +13,7 @@ pipeline {
     stages {
         stage('Build & Unit Tests') {
             steps {
-                dir('bankapp') {
-                  sh 'mvn clean test'
-                }
+                sh 'mvn clean test'
             }
         }
 
