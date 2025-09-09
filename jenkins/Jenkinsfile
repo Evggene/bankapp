@@ -20,14 +20,14 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh """
-                docker build -t ghcr.io/bankapp/accounts:${IMAGE_TAG} accounts
-                docker build -t ghcr.io/bankapp/blocker:${IMAGE_TAG} blocker
-                docker build -t ghcr.io/bankapp/cash:${IMAGE_TAG} cash
-                docker build -t ghcr.io/bankapp/exchange:${IMAGE_TAG} exchange
-                docker build -t ghcr.io/bankapp/exchange-generator:${IMAGE_TAG} exchange-generator
-                docker build -t ghcr.io/bankapp/front-ui:${IMAGE_TAG} front-ui
-                docker build -t ghcr.io/bankapp/notifications:${IMAGE_TAG} notifications
-                docker build -t ghcr.io/bankapp/transfer:${IMAGE_TAG} transfer
+                docker build -t ghcr.io/evggene/accounts:${IMAGE_TAG} accounts
+                docker build -t ghcr.io/evggene/blocker:${IMAGE_TAG} blocker
+                docker build -t ghcr.io/evggene/cash:${IMAGE_TAG} cash
+                docker build -t ghcr.io/evggene/exchange:${IMAGE_TAG} exchange
+                docker build -t ghcr.io/evggene/exchange-generator:${IMAGE_TAG} exchange-generator
+                docker build -t ghcr.io/evggene/front-ui:${IMAGE_TAG} front-ui
+                docker build -t ghcr.io/evggene/notifications:${IMAGE_TAG} notifications
+                docker build -t ghcr.io/evggene/transfer:${IMAGE_TAG} transfer
                 """
             }
         }
@@ -37,14 +37,14 @@ pipeline {
                 withCredentials([string(credentialsId: 'GHCR_TOKEN', variable: 'GHCR_TOKEN')]) {
                     sh """
                     echo \$GHCR_TOKEN | docker login ghcr.io -u ${GITHUB_USERNAME} --password-stdin
-                    docker push  ghcr.io/bankapp/accounts:${IMAGE_TAG}
-                    docker push  ghcr.io/bankapp/blocker:${IMAGE_TAG}
-                    docker push  ghcr.io/bankapp/cash:${IMAGE_TAG}
-                    docker push  ghcr.io/bankapp/exchange:${IMAGE_TAG}
-                    docker push ghcr.io/bankapp/exchange-generator:${IMAGE_TAG}
-                    docker push  ghcr.io/bankapp/front-ui:${IMAGE_TAG}
-                    docker push  ghcr.io/bankapp/notifications:${IMAGE_TAG}
-                    docker push  ghcr.io/bankapp/transfer:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/accounts:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/blocker:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/cash:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/exchange:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/exchange-generator:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/front-ui:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/notifications:${IMAGE_TAG}
+                    docker push  ghcr.io/evggene/transfer:${IMAGE_TAG}
                     """
                 }
             }
