@@ -20,14 +20,14 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh """
-                docker build -t ${DOCKER_REGISTRY}/accounts:${IMAGE_TAG} accounts
-                docker build -t ${DOCKER_REGISTRY}/blocker:${IMAGE_TAG} blocker
-                docker build -t ${DOCKER_REGISTRY}/cash:${IMAGE_TAG} cash
-                docker build -t ${DOCKER_REGISTRY}/exchange:${IMAGE_TAG} exchange
-                docker build -t ${DOCKER_REGISTRY}/exchange-generator:${IMAGE_TAG} exchange-generator
-                docker build -t ${DOCKER_REGISTRY}/front-ui:${IMAGE_TAG} front-ui
-                docker build -t ${DOCKER_REGISTRY}/notifications:${IMAGE_TAG} notifications
-                docker build -t ${DOCKER_REGISTRY}/transfer:${IMAGE_TAG} transfer
+                docker build -t bankapp/accounts:${IMAGE_TAG} accounts
+                docker build -t bankapp/blocker:${IMAGE_TAG} blocker
+                docker build -t bankapp/cash:${IMAGE_TAG} cash
+                docker build -t bankapp/exchange:${IMAGE_TAG} exchange
+                docker build -t bankapp/exchange-generator:${IMAGE_TAG} exchange-generator
+                docker build -t bankapp/front-ui:${IMAGE_TAG} front-ui
+                docker build -t bankapp/notifications:${IMAGE_TAG} notifications
+                docker build -t bankapp/transfer:${IMAGE_TAG} transfer
                 """
             }
         }
