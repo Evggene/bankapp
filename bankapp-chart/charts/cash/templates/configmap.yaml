@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-cash-config
+  name: {{ .Release.Name }}-{{ .Chart.Name }}-config
   labels:
-    app.kubernetes.io/name: cash
+    app.kubernetes.io/name: {{ .Chart.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 data:
   application.yml: |-
@@ -22,7 +22,7 @@ data:
 
     spring:
       datasource:
-        url: jdbc:postgresql://{{- if .Values.database.host }}{{ .Values.database.host }}{{- else }}{{ .Release.Name }}-postgres{{- end }}:{{ .Values.database.port }}/{{ .Values.database.name }}
+        url: jdbc:postgresql://{{ .Release.Name }}-postgres:{{ .Values.database.port }}/{{ .Values.database.name }}
         username: {{ .Values.database.username | quote }}
         password: {{ .Values.database.password | quote }}
 
