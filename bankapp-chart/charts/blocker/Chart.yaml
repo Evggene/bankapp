@@ -1,6 +1,6 @@
 apiVersion: v2
 name: blocker
-description: Blocker microservice (BankApp) — minimal chart without helpers
+description: Blocker microservice for BankApp
 type: application
 version: 0.1.0
 appVersion: "0.0.1"

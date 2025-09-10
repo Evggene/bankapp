@@ -1,8 +1,10 @@
 global:
   minikubeIp: "192.168.49.2"
+
 ingress:
   enabled: true
   className: "nginx"
+
 accounts:
   service:
     port: 8010

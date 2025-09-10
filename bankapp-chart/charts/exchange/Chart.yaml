@@ -1,6 +1,6 @@
 apiVersion: v2
 name: exchange
-description: Exchange microservice (currency conversion) for BankApp
+description: Exchange microservice for BankApp
 type: application
 version: 0.1.0
 appVersion: "0.0.1"
