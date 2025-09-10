@@ -12,7 +12,7 @@ spec:
   ingressClassName: {{ .Values.ingress.className | quote }}
   {{- end }}
   rules:
-    - host: {{ printf "bankapp.%s.nip.io" .Values.global.minikubeIp | quote }}
+    - host: {{ .Release.Name }}.{{ .Values.global.minikubeIp }}.nip.io
       http:
         paths:
           - path: /
@@ -48,7 +48,7 @@ spec:
   ingressClassName: {{ .Values.ingress.className | quote }}
   {{- end }}
   rules:
-    - host: {{ printf "bankapp.%s.nip.io" .Values.global.minikubeIp | quote }}
+    - host: {{ .Release.Name }}.{{ .Values.global.minikubeIp}}.nip.io
       http:
         paths:
           - path: /accounts/?(.*)

@@ -17,12 +17,12 @@ config:
     application:
       name: front-ui
   shared:
-    gatewayBaseUrl: "http://bankapp.192.168.49.2.nip.io"
+    gatewayBaseUrl: "http://{{ .Release.Name }}.192.168.49.2.nip.io"
   security:
     oauth2:
       provider:
         keycloak:
-          issuerUri: "http://bankapp.192.168.49.2.nip.io/keycloak/realms/myrealm"
+          issuerUri: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak/realms/myrealm"
       registration:
         front_ui_client:
           clientId: "front_ui_client"

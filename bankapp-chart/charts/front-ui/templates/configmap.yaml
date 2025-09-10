@@ -12,10 +12,11 @@ data:
         session:
           cookie:
             name: FRONTUISESSION
-            domain: bankapp.192.168.49.2.nip.io
+            domain: {{ .Release.Name }}.192.168.49.2.nip.io
             path: /
             same-site: Lax
             secure: false   # без TLS
+      port: {{ .Values.service.port }}
     spring:
       application:
         name: {{ .Values.config.spring.application.name | default "front-ui" | quote }}
@@ -24,7 +25,7 @@ data:
           client:
             provider:
               keycloak:
-                issuer-uri: "http://bankapp.192.168.49.2.nip.io/keycloak/realms/myrealm"
+                issuer-uri: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak/realms/myrealm"
             registration:
               front_ui_client:
                 client-id: front_ui_client
@@ -32,4 +33,4 @@ data:
                 scope: front_ui
                 authorization-grant-type: client_credentials
     shared:
-      gatewayBaseUrl: "http://bankapp.192.168.49.2.nip.io"
+      gatewayBaseUrl: "http://{{ .Release.Name }}.192.168.49.2.nip.io"

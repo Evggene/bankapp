@@ -30,6 +30,6 @@ data:
       url: "http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
 
     shared:
-      gateway-base-url: "http://bankapp.{{ .Values.global.minikubeIp }}.nip.io"
+      gateway-base-url: "http://{{ .Release.Name }}.{{ .Values.global.minikubeIp }}.nip.io"
     app:
-      gateway-base-url: "http://bankapp.{{ .Values.global.minikubeIp }}.nip.io"
+      gateway-base-url: "http://{{ .Release.Name }}.{{ .Values.global.minikubeIp }}.nip.io"

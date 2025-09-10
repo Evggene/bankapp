@@ -11,5 +11,5 @@ data:
     spring.cloud.consul.config.enabled=false
     logging.level.org.springframework.web=INFO
     keycloak.url=http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}/keycloak
-    server.port=8050
+    server.port={{ .Values.service.port }}
     management.endpoints.web.exposure.include=health,info

@@ -31,14 +31,11 @@ data:
       level:
         org.springframework.web: INFO
 
-    # Keycloak base URL (with relative path) — used by SecurityConfig/JWT decoder
     keycloak:
-      url: "http://{{- if .Values.keycloak.host }}{{ .Values.keycloak.host }}{{- else }}{{ .Release.Name }}-keycloak{{- end }}:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
+      url: "http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}"
 
-    # Internal dependency: exchange-generator
     generator:
-      url: "http://{{- if .Values.generator.host }}{{ .Values.generator.host }}{{- else }}{{ .Release.Name }}-exchange-generator{{- end }}:{{ .Values.generator.port }}"
+      url: "http://{{ .Release.Name }}-exchange-generator:{{ .Values.generator.port }}"
 
-    # Optional: base URL for calls through ingress
     shared:
-      gateway-base-url: "{{- if .Values.shared.gatewayBaseUrl }}{{ .Values.shared.gatewayBaseUrl }}{{- else }}http://bankapp.{{ .Values.global.minikubeIp }}.nip.io{{- end }}"
+      gateway-base-url: http://{{ .Release.Name }}.{{ .Values.global.minikubeIp }}.nip.io

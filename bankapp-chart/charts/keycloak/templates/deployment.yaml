@@ -35,7 +35,7 @@ spec:
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
             - name: KC_HOSTNAME
-              value: "http://bankapp.{{ .Values.global.minikubeIp }}.nip.io/keycloak"
+              value: "http://{{ .Release.Name }}.{{ .Values.global.minikubeIp }}.nip.io/keycloak"
             - name: KC_HTTP_RELATIVE_PATH
               value: "/keycloak"
             - name: KC_HOSTNAME_STRICT

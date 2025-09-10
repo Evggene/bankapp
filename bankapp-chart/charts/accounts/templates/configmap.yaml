@@ -28,7 +28,7 @@ data:
               jwk-set-uri: http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}/realms/{{ .Values.keycloak.realm }}/protocol/openid-connect/certs
 
     server:
-      port: 8010
+      port: {{ .Values.service.port }}
 
     management:
       endpoints:
@@ -36,4 +36,4 @@ data:
           exposure:
             include: health,info
     keycloak:
-      url: "http://bankapp.192.168.49.2.nip.io/keycloak"
+      url: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak"
