@@ -1,8 +1,3 @@
-image:
-  repository: front-ui
-  tag: "0.0.9-SNAPSHOT"
-  pullPolicy: IfNotPresent
-
 replicaCount: 1
 
 service:

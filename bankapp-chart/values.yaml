@@ -1,33 +1,24 @@
 global:
   minikubeIp: "192.168.49.2"
+  imageRegistry: "ghcr.io/evggene/"
+  pullPolicy: IfNotPresent
+  tag: "0.0.1"
 
 ingress:
   enabled: true
   className: "nginx"
 
-accounts:
-  service:
-    port: 8010
-
 keycloak:
   service:
     port: 8101
 
+accounts:
+  service:
+    port: 8010
+
 front-ui:
   service:
     port: 8060
-
-exchange-generator:
-  service:
-    port: 8050
-
-blocker:
-  service:
-    port: 8020
-
-notifications:
-  service:
-    port: 8070
 
 cash:
   service:
@@ -40,3 +31,15 @@ exchange:
 transfer:
   service:
     port: 8090
+
+notifications:
+  service:
+    port: 8050
+
+blocker:
+  service:
+    port: 8020
+
+exchange-generator:
+  service:
+    port: 8070
