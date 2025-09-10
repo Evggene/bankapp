@@ -1,6 +1,6 @@
 global:
   minikubeIp: "192.168.49.2"
-  imageRegistry: "ghcr.io/evggene/"
+  imageRegistry: "ghcr.io/evggene"
   pullPolicy: IfNotPresent
   tag: "0.0.1"
 
@@ -34,7 +34,7 @@ transfer:
 
 notifications:
   service:
-    port: 8050
+    port: 8070
 
 blocker:
   service:
@@ -42,4 +42,4 @@ blocker:
 
 exchange-generator:
   service:
-    port: 8070
+    port: 8050

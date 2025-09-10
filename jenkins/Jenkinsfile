@@ -53,7 +53,7 @@ pipeline {
                 sh """
                 helm upgrade --install bankapp bankapp-chart \\
                   --namespace test --create-namespace \\
-                  --set image.tag=${IMAGE_TAG}
+                  --set global.tag=${IMAGE_TAG}
                 """
             }
         }
