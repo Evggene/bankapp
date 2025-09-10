@@ -34,10 +34,8 @@ spec:
               value: "true"
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
-            # Внешний адрес С ПРЕФИКСОМ:
             - name: KC_HOSTNAME
               value: "http://bankapp.{{ .Values.global.minikubeIp }}.nip.io/keycloak"
-            # Включаем ВНУТРЕННИЙ путь у самого Keycloak:
             - name: KC_HTTP_RELATIVE_PATH
               value: "/keycloak"
             - name: KC_HOSTNAME_STRICT
