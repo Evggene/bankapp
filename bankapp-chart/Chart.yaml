@@ -4,3 +4,9 @@ description: Umbrella chart for BankApp
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
+dependencies:
+  - name: kafka
+    version: '>=32.0.0'
+    repository: oci://registry-1.docker.io/bitnamicharts
+    alias: kafka
+    condition: kafka.enabled

@@ -11,35 +11,54 @@ ingress:
 keycloak:
   service:
     port: 8101
-
 accounts:
   service:
     port: 8010
-
 front-ui:
   service:
     port: 8060
-
 cash:
   service:
     port: 8030
-
 exchange:
   service:
     port: 8040
-
 transfer:
   service:
     port: 8090
-
 notifications:
   service:
     port: 8070
-
 blocker:
   service:
     port: 8020
-
 exchange-generator:
   service:
     port: 8050
+kafka:
+  enabled: true
+  fullnameOverride: kafka
+  kraft:
+    enabled: true
+  controller:
+    replicaCount: 1
+  broker:
+    replicaCount: 1
+  listeners:
+    client:
+      protocol: PLAINTEXT
+  provisioning:
+    enabled: true
+    topics:
+      - name: notifications.events
+        partitions: 3
+        replicationFactor: 1
+      - name: exchange.rates
+        partitions: 3
+        replicationFactor: 1
+      - name: cash.operations
+        partitions: 3
+        replicationFactor: 1
+      - name: transfer.operations
+        partitions: 3
+        replicationFactor: 1
