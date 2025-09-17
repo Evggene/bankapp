@@ -1,4 +1,4 @@
-package org.bea.domain;
+package org.bea.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class CashNotification {
+public final class NotificationDto {
 
     private String operation;
     private String login;

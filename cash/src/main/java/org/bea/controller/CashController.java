@@ -2,9 +2,9 @@ package org.bea.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.bea.domain.CashNotification;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.domain.dto.CashFormRequest;
+import org.bea.dto.NotificationDto;
 import org.bea.service.CashService;
 import org.bea.service.NotificationProducer;
 import org.springframework.http.MediaType;
@@ -24,14 +24,14 @@ public class CashController {
         var action = form.getAction();
         if ("PUT".equalsIgnoreCase(action)) {
             // Формируем DTO для уведомления о пополнении
-            var notification = new CashNotification(
+            var notification = new NotificationDto(
                     "Пополнение", login, form.getValue().toString(), form.getCurrency());
             // Отправляем уведомление через Kafka
             notificationProducer.sendMessage(notification);
             return svc.deposit(login, form.getCurrency(), form.getValue());
         } else if ("GET".equalsIgnoreCase(action)) {
             // Формируем DTO для уведомления о снятии
-            var notification = new CashNotification(
+            var notification = new NotificationDto(
                     "Снятие", login, form.getValue().toString(), form.getCurrency());
             // Отправляем уведомление через Kafka
             notificationProducer.sendMessage(notification);

@@ -27,7 +27,7 @@ data:
         password: {{ .Values.database.password | quote }}
     
       kafka:
-        bootstrap-servers: localhost:9092  # Adjust for your Kafka server address
+        bootstrap-servers: http://kafka:9092  # Adjust for your Kafka server address
         producer:
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.apache.kafka.common.serialization.StringSerializer

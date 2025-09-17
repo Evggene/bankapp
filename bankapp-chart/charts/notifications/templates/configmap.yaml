@@ -8,6 +8,11 @@ metadata:
 data:
   application.properties: |
     spring.application.name=notifications
-    logging.level.org.springframework.web=INFO
+    spring.kafka.bootstrap-servers=http://kafka:9092
+    spring.kafka.consumer.group-id=notifications
+    spring.kafka.consumer.auto-offset-reset=earliest
+    spring.kafka.consumer.enable-auto-commit=true
     server.port={{ .Values.service.port }}
+    logging.level.org.springframework.web=INFO
     management.endpoints.web.exposure.include=health,info
+    topics.notifications.cash-topic=exchange.rates

@@ -23,6 +23,16 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: notifications
+      auto-offset-reset: earliest
+
+  topics:
+    notifications:
+      cash-topic: "exchange.rates"
+
 resilience4j:
   retry:
     instances:

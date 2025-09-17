@@ -1,6 +1,6 @@
 package org.bea.service;
 
-import org.bea.domain.CashNotification;
+import org.bea.dto.NotificationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class NotificationProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(CashNotification notification) {
+    public void sendMessage(NotificationDto notification) {
         kafkaTemplate.send("exchange.rates", notification.toJson());
     }
 }
