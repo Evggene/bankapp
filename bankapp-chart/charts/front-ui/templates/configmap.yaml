@@ -29,7 +29,7 @@ data:
             registration:
               front_ui_client:
                 client-id: front_ui_client
-                client-secret: OV5Wdi0Vtf1VDWJpw3eSFjvDKLFNqPjq
+                client-secret: IgHToCXM1zf7qxSHAyfWwjmC02y3vily
                 scope: front_ui
                 authorization-grant-type: client_credentials
     shared:

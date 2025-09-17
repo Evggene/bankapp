@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-client-config
+  namespace: {{ .Release.Namespace }}
+data:
+  realm-config.json: |
+    {
+      "realm": "myrealm",  // Имя реалма, в котором будет создан клиент
+      "enabled": true,
+      "clients": [
+        {
+          "clientId": "my-client",  // Имя клиента
+          "enabled": true,
+          "clientAuthenticatorType": "client-secret",  // Тип аутентификации
+          "secret": "my-client-secret",  // Секрет клиента для авторизации
+          "protocol": "openid-connect",  // Протокол
+          "publicClient": false,  // Это не публичный клиент
+          "access": {
+            "type": "client_credentials",  // Тип авторизации для сервер-серверной авторизации
+            "roles": ["admin"]
+          },
+          "redirectUris": [],  // Нет необходимости в redirect URI для сервер-серверной авторизации
+          "serviceAccountsEnabled": true,  // Разрешение на использование сервисных аккаунтов
+          "authorizationSettings": {
+            "allowServiceAccounts": true
+          }
+        }
+      ]
+    }

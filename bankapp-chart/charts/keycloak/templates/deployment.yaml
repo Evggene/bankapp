@@ -16,18 +16,9 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      initContainers:
-        - name: wait-for-db
-          image: postgres:12.5
-          command: ["sh","-c"]
-          args:
-            - >
-              until pg_isready -h {{ default (printf "%s-postgres" .Release.Name) .Values.db.host }} -p {{ .Values.db.port }};
-              do echo "waiting for database"; sleep 2; done
       containers:
         - name: keycloak
           image: {{ .Values.image | quote }}
-          # для локалки удобно "start-dev"; в проде используйте "start"
           args: ["start-dev"]
           env:
             - name: KC_HTTP_ENABLED
@@ -42,7 +33,21 @@ spec:
               value: "false"
             - name: KC_HOSTNAME_STRICT_HTTPS
               value: "false"
+            - name: DB_VENDOR
+              value: POSTGRES
+            - name: DB_ADDR
+              value: bankapp-postgres  # Имя PostgreSQL сервиса
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              value: "bankapp"
+            - name: DB_USER
+              value: "user"
+            - name: DB_PASSWORD
+              value: "pass"
           envFrom:
+            - configMapRef:
+                  name: keycloak-client-config
             - secretRef:
                 name: {{ include "keycloak.fullname" . }}-secret
           ports:
@@ -54,3 +59,10 @@ spec:
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
+          volumeMounts:
+            - name: keycloak-data
+              mountPath: /opt/keycloak/data  # Путь, куда монтируется Persistent Volume
+      volumes:
+        - name: keycloak-data
+          persistentVolumeClaim:
+            claimName: keycloak-data  # Указание на PVC

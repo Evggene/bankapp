@@ -1,8 +1,8 @@
 global:
   minikubeIp: "192.168.49.2"
-  imageRegistry: "ghcr.io/evggene"
+  imagePrefix: "ghcr.io/evggene"
   pullPolicy: IfNotPresent
-  tag: "0.0.1"
+  tag: "0.0.3-SNAPSHOT"
 
 ingress:
   enabled: true
@@ -37,19 +37,19 @@ exchange-generator:
     port: 8050
 kafka:
   enabled: true
-  # Основной контейнер Kafka
   image:
     registry: docker.io
     repository: bitnami/kafka
     tag: 4.0.0-debian-12-r10
-  # (Опционально) JMX-экспортер
+
   metrics:
     jmx:
-      # enabled: true        # включите при необходимости
+      # enabled: true
       image:
         registry: docker.io
         repository: bitnami/jmx-exporter
         tag: 1.4.0-debian-12-r0
+
   fullnameOverride: kafka
   kraft:
     enabled: true
@@ -60,18 +60,16 @@ kafka:
   listeners:
     client:
       protocol: PLAINTEXT
-  # Provisioning (темы + образы os-shell/kubectl явно из docker.io/bitnami)
+
   provisioning:
     enabled: true
     image:
       registry: docker.io
       repository: bitnami/os-shell
-      # tag: 12-debian-12-r51  # можно зафиксировать при желании
     kubectl:
       image:
         registry: docker.io
         repository: bitnami/kubectl
-        tag: 1.33.4-debian-12-r0
     topics:
       - name: notifications.events
         partitions: 3

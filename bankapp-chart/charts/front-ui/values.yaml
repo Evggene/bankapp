@@ -24,6 +24,5 @@ config:
           clientSecret: "EMgj3OIlpjhemWPhujno1hn1q1AC1AbT"
 
   debug:
-    enabled: true     # ← выключить = false
     port: 5005        # локально будем форвардить на этот порт
     suspend: "n"      # "y" — JVM ждёт подключение перед стартом
