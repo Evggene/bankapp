@@ -25,6 +25,12 @@ data:
         url: jdbc:postgresql://{{ .Release.Name }}-postgres:{{ .Values.database.port }}/{{ .Values.database.name }}
         username: {{ .Values.database.username | quote }}
         password: {{ .Values.database.password | quote }}
+    
+      kafka:
+        bootstrap-servers: localhost:9092  # Adjust for your Kafka server address
+        producer:
+          key-serializer: org.apache.kafka.common.serialization.StringSerializer
+          value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
     keycloak:
       url: http://{{ .Release.Name }}-keycloak:{{ .Values.keycloak.port }}{{ .Values.keycloak.relativePath }}

@@ -2,7 +2,7 @@ global:
   minikubeIp: "192.168.49.2"
   imagePrefix: "ghcr.io/evggene"
   pullPolicy: IfNotPresent
-  tag: "0.0.4-SNAPSHOT"
+  tag: "0.0.5-SNAPSHOT"
 
 ingress:
   enabled: true
@@ -72,14 +72,8 @@ kafka:
         repository: bitnami/kubectl
     topics:
       - name: notifications.events
-        partitions: 3
+        partitions: 1
         replicationFactor: 1
       - name: exchange.rates
-        partitions: 3
-        replicationFactor: 1
-      - name: cash.operations
-        partitions: 3
-        replicationFactor: 1
-      - name: transfer.operations
-        partitions: 3
+        partitions: 1
         replicationFactor: 1
