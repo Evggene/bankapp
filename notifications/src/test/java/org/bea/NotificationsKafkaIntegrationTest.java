@@ -28,7 +28,9 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
         "spring.kafka.consumer.group-id=notifications",
         "spring.kafka.consumer.auto-offset-reset=earliest",
-        "topics.notifications.cash-topic=exchange.rates"
+        "topics.notifications.cash-topic=exchange.rates",
+        "spring.kafka.consumer.enable-auto-commit=false",
+        "spring.kafka.listener.ack-mode=MANUAL_IMMEDIATE",
 })
 @EmbeddedKafka(partitions = 1, topics = { "exchange.rates" })
 class NotificationsKafkaIntegrationTest {

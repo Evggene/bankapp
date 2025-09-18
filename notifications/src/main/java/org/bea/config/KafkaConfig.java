@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.Map;
@@ -26,8 +27,7 @@ public class KafkaConfig {
     @Bean
     public ConsumerFactory<String, NotificationDto> consumerFactory(KafkaProperties properties) {
         Map<String, Object> configs = properties.buildConsumerProperties();
-        JsonDeserializer<NotificationDto> json = new JsonDeserializer<>(NotificationDto.class, false);
-        json.addTrustedPackages("org.bea.*");
+        JsonDeserializer<NotificationDto> json = new JsonDeserializer<>(NotificationDto.class);
         return new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(), json);
     }
 
@@ -35,6 +35,7 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, NotificationDto> kafkaListenerContainerFactory(ConsumerFactory<String, NotificationDto> consumerFactory) {
         ConcurrentKafkaListenerContainerFactory<String, NotificationDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         return factory;
     }
 }

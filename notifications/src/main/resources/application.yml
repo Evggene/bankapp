@@ -27,7 +27,12 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
     consumer:
       group-id: notifications
+      enable-auto-commit: false         # ручной коммит
       auto-offset-reset: earliest
+      listener:
+        ack-mode: MANUAL_IMMEDIATE         # режим ручного подтверждения
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 
   topics:
     notifications:
