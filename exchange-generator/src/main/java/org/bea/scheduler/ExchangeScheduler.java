@@ -1,6 +1,9 @@
 package org.bea.scheduler;
 
+import lombok.RequiredArgsConstructor;
 import org.bea.domain.Store;
+import org.bea.service.ExchangeProducer;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +11,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+@Profile("!test")
 @Component
-public class Scheduler {
+@RequiredArgsConstructor
+public class ExchangeScheduler {
 
     private final Random random = new Random();
+
+    private final ExchangeProducer exchangeProducer;
 
     @Scheduled(fixedRate = 1000)
     public void updateRates() {
@@ -21,5 +28,6 @@ public class Scheduler {
                     .setScale(2, RoundingMode.HALF_UP);
             rate.setValue(newValue);
         });
+        exchangeProducer.sendRatesBatch(Store.currencyRates.values());
     }
 }

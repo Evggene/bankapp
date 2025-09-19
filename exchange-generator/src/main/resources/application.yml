@@ -27,6 +27,15 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:8101/realms/myrealm/protocol/openid-connect/certs
+  kafka:
+    bootstrap-servers: http://kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+      enable-idempotence: true
+      max-in-flight-requests-per-connection: 5
 
 resilience4j:
   retry:
