@@ -2,7 +2,7 @@ global:
   minikubeIp: "192.168.49.2"
   imagePrefix: "ghcr.io/evggene"
   pullPolicy: IfNotPresent
-  tag: "0.0.6-SNAPSHOT"
+  tag: "0.0.8-SNAPSHOT"
 
 ingress:
   enabled: true
@@ -54,7 +54,6 @@ kafka:
 
   metrics:
     jmx:
-      # enabled: true
       image:
         registry: docker.io
         repository: bitnami/jmx-exporter
@@ -62,67 +61,39 @@ kafka:
 
   fullnameOverride: kafka
 
-  # --- ВКЛЮЧЁН KRaft ---
   kraft:
     enabled: true
 
-  # --- Реплики ---
   controller:
     replicaCount: 1
-    # ВАЖНО: env для контроллера (роль controller + кворум)
-    extraEnvVars:
-      - name: KAFKA_CFG_PROCESS_ROLES
-        value: "controller"
-      - name: KAFKA_CFG_LISTENERS
-        value: "CONTROLLER://:9093"
-      - name: KAFKA_CFG_ADVERTISED_LISTENERS
-        value: "CONTROLLER://kafka-controller-0.kafka-controller-headless.bankapp.svc.cluster.local:9093"
-      - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-        value: "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT"
-      - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
-        value: "0@kafka-controller-0.kafka-controller-headless.bankapp.svc.cluster.local:9093"
+    persistence:
+      enabled: true
+      size: 1Gi
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
 
   broker:
     replicaCount: 1
-    # ВАЖНО: env для брокера (роль broker + слушатели + rf/ISR=1)
     extraEnvVars:
-      - name: KAFKA_CFG_PROCESS_ROLES
-        value: "broker"
-      # 3 слушателя: INTERNAL (между брокерами), CLIENT (для приложений), CONTROLLER (для связи с контроллером)
-      - name: KAFKA_CFG_LISTENERS
-        value: "INTERNAL://:9094,CLIENT://:9092,CONTROLLER://:9093"
-      - name: KAFKA_CFG_ADVERTISED_LISTENERS
-        value: "INTERNAL://kafka:9094,CLIENT://kafka:9092"
-      - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-        value: "INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT,CONTROLLER:PLAINTEXT"
-      - name: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
-        value: "INTERNAL"
-      - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
-        value: "0@kafka-controller-0.kafka-controller-headless.bankapp.svc.cluster.local:9093"
-      # single-broker: факторы репликации и ISR = 1, иначе __consumer_offsets не создастся
       - name: KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR
         value: "1"
       - name: KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
         value: "1"
       - name: KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR
         value: "1"
-      - name: KAFKA_CFG_DEFAULT_REPLICATION_FACTOR
-        value: "1"
-      - name: KAFKA_CFG_MIN_INSYNC_REPLICAS
-        value: "1"
-      # авто-создание топиков (удобно для dev)
-      - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
-        value: "true"
 
-  # --- Слушатели (секция чарта) ---
-  # Оставляем клиентский PLAINTEXT; INTERNAL/CONTROLLER задаём через env выше.
+    persistence:
+      enabled: true
+      size: 1Gi
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+
   listeners:
     client:
       protocol: PLAINTEXT
-    # interBroker/controller могут отсутствовать в вашей версии значения — это ок,
-    # они перекрыты env’ами KAFKA_CFG_*.
 
-  # --- Провижининг топиков ---
   provisioning:
     enabled: true
     image:

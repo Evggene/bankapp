@@ -23,21 +23,17 @@ public class CashController {
     public CashBalanceResponse handleForm(@PathVariable String login, @Valid CashFormRequest form) {
         var action = form.getAction();
         if ("PUT".equalsIgnoreCase(action)) {
-            // Формируем DTO для уведомления о пополнении
-            var notification = new NotificationDto(
-                    "Пополнение", login, form.getValue().toString(), form.getCurrency());
-            // Отправляем уведомление через Kafka
-            notificationProducer.sendMessage(notification);
-            return svc.deposit(login, form.getCurrency(), form.getValue());
+            return handle("Пополнение", login, form, svc.deposit(login, form.getCurrency(), form.getValue()));
         } else if ("GET".equalsIgnoreCase(action)) {
-            // Формируем DTO для уведомления о снятии
-            var notification = new NotificationDto(
-                    "Снятие", login, form.getValue().toString(), form.getCurrency());
-            // Отправляем уведомление через Kafka
-            notificationProducer.sendMessage(notification);
-            return svc.withdraw(login, form.getCurrency(), form.getValue());
+            return handle("Снятие", login, form, svc.withdraw(login, form.getCurrency(), form.getValue()));
         } else {
             throw new IllegalArgumentException("Неизвестное действие: " + action);
         }
+    }
+
+    private CashBalanceResponse handle(String op, String login, CashFormRequest form, CashBalanceResponse svc) {
+        var notification = new NotificationDto(op, login, form.getValue().toString(), form.getCurrency());
+        notificationProducer.sendMessage(notification);
+        return svc;
     }
 }

@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.bea.api.dto.TransferFormRequest;
 import org.bea.config.SharedAppProperties;
+import org.bea.dto.NotificationDto;
 import org.bea.repo.TransferOperationRepository;
+import org.bea.service.NotificationProducer;
 import org.bea.service.TransferService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,29 +24,18 @@ public class TransferController {
 
     private final TransferService svc;
     private final TransferOperationRepository repo;
-    private final RestTemplate restTemplate;
-    private final SharedAppProperties properties;
+    private final NotificationProducer notificationProducer;
 
     @PostMapping(value = "/user/{login}/doTransfer",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<Void> doTransfer(@PathVariable String login, @Valid TransferFormRequest form) {
-        UUID id = svc.transfer(
-                login,
-                form.getTo_login(),
-                form.getFrom_currency(),
-                form.getTo_currency(),
-                form.getValue());
-
-        // Уведомим notifications
-        notifyOperation(String.format(
-                "Перевод: %s → %s, %s %s → %s",
-                login,
-                form.getTo_login(),
-                form.getValue(),
-                form.getFrom_currency(),
-                form.getTo_currency()
-        ));
-
+        svc.transfer(login, form.getTo_login(), form.getFrom_currency(), form.getTo_currency(), form.getValue());
+        var notification = new NotificationDto(
+                "Перевод",
+                String.format("%s → %s", login, form.getTo_login()),
+                form.getValue().toString(),
+                String.format("%s → %s", form.getFrom_currency(), form.getTo_currency()));
+        notificationProducer.sendMessage(notification);
         return ResponseEntity.noContent().build();
     }
 
@@ -53,15 +44,4 @@ public class TransferController {
         return repo.findTop50ByOrderByTsDesc();
     }
 
-    private void notifyOperation(String message) {
-        try {
-            restTemplate.postForEntity(
-                    properties.getGatewayBaseUrl() + "/notifications/notify?operation={op}",
-                    null,
-                    Void.class,
-                    message
-            );
-        } catch (Exception ignored) {
-        }
-    }
 }
