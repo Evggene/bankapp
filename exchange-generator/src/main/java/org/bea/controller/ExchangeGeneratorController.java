@@ -16,6 +16,7 @@ public class ExchangeGeneratorController {
         return "hello";
     }
 
+    @Deprecated // перешли на кафку
     @GetMapping("/getRates")
     public Collection<CurrencyRate> getRates() {
         return Store.currencyRates.values();

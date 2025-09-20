@@ -1,7 +1,9 @@
 package org.bea.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.*;
@@ -9,6 +11,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 import java.util.List;
 
+@Profile("!test")
+@ConditionalOnProperty(prefix = "auth.client", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Configuration
 public class OAuth2ClientManagerConfig {
 

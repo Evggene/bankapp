@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CashEventListener {
+public class NotificationEventListener {
 
     @Value("${topics.notifications.cash-topic}")
     private String topic;
