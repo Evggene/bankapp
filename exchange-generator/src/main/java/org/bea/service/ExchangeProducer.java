@@ -21,7 +21,7 @@ public class ExchangeProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${topics.exchange-rates:cash.operations}")
+    @Value("${topics.exchange-rates:cash.exchange.rates}")
     private String topic;
 
     public void sendRatesBatch(Collection<CurrencyRate> rates) {

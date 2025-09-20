@@ -14,12 +14,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class NotificationEventListener {
 
-    @Value("${topics.notifications.cash-topic}")
+    @Value("${topics.notifications.topic:notifications.event}")
     private String topic;
 
-    @KafkaListener(
-            topics = "${topics.notifications.cash-topic}"
-    )
+    @KafkaListener(topics = "${topics.notifications.topic:notifications.event}")
     public void onCashEvent(ConsumerRecord<String, NotificationDto> record, Acknowledgment ack) {
         NotificationDto event = record.value();
         try {

@@ -20,11 +20,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class CashEventListener {
 
-    @Value("${topics.exchange.topic:notifications.events}")
+    @Value("${topics.exchange.topic:exchange.rates}")
     private String topic;
     private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "${topics.notifications.cash-topic:exchange.rates}")
+    @KafkaListener(topics = "${topics.exchange.topic:exchange.rates}")
     public void onCashEvent(String payload, Acknowledgment ack) {
         try {
             List<CurrencyRate> rates = objectMapper.readValue(payload, new TypeReference<List<CurrencyRate>>() {});

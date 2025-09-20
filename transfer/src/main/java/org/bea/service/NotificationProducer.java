@@ -16,6 +16,6 @@ public class NotificationProducer {
     }
 
     public void sendMessage(NotificationDto notification) {
-        kafkaTemplate.send("exchange.rates", notification.toJson());
+        kafkaTemplate.send("notifications.event", notification.toJson());
     }
 }

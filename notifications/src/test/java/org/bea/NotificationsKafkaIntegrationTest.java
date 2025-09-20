@@ -28,11 +28,11 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
         "spring.kafka.consumer.group-id=notifications",
         "spring.kafka.consumer.auto-offset-reset=earliest",
-        "topics.notifications.cash-topic=exchange.rates",
+        "topics.notifications.topic=test",
         "spring.kafka.consumer.enable-auto-commit=false",
         "spring.kafka.listener.ack-mode=MANUAL_IMMEDIATE",
 })
-@EmbeddedKafka(partitions = 1, topics = { "exchange.rates" })
+@EmbeddedKafka(partitions = 1, topics = { "test" })
 class NotificationsKafkaIntegrationTest {
 
     @Autowired
@@ -44,7 +44,7 @@ class NotificationsKafkaIntegrationTest {
         NotificationService.messages.clear();
         var evt = new NotificationDto("op-1", "qq", "100.00", "RUB");
         // when
-        kafkaTemplate.send("exchange.rates", "op-1", evt.toJson());
+        kafkaTemplate.send("test", "op-1", evt.toJson());
 
         Awaitility.await()
                 .atMost(Duration.ofSeconds(10))

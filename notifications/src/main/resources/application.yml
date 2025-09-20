@@ -36,7 +36,7 @@ spring:
 
   topics:
     notifications:
-      cash-topic: "exchange.rates"
+      topic: "notifications.event"
 
 resilience4j:
   retry:

@@ -51,7 +51,7 @@ pipeline {
         stage('Helm Deploy') {
             steps {
                 sh """
-                helm upgrade --install bankapp bankapp-chart --namespace test --create-namespace --set global.tag=${IMAGE_TAG}
+                helm upgrade --install bankapp bankapp-chart --namespace bankapp --create-namespace --set global.tag=${IMAGE_TAG}
                 """
             }
         }
