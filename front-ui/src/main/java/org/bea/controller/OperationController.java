@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class OperationController {
 
@@ -31,22 +32,8 @@ public class OperationController {
     private final RestTemplate restTemplate;
     private final SharedAppProperties properties;
 
-    @GetMapping("/getRates")
-    public Collection<CurrencyRate> getRates() {
-        String token = clientCredentialsToken.get();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-        ResponseEntity<List<CurrencyRate>> response = restTemplate.exchange(
-                properties.getGatewayBaseUrl() + "/exchange-generator/getRates",
-                HttpMethod.GET,
-                entity,
-                new ParameterizedTypeReference<>() {});
-        return response.getBody();
-    }
-
     @PostMapping("/user/{login}/getCash")
-    public void cash(@PathVariable String login,
+    public String cash(@PathVariable String login,
                        @RequestParam String currency,
                        @RequestParam BigDecimal value,
                        @RequestParam String action) {
@@ -63,10 +50,12 @@ public class OperationController {
 
         restTemplate.postForEntity(properties.getGatewayBaseUrl() + "/cash/user/" + login + "/getCash",
                 new HttpEntity<>(form, headers), Void.class, login);
+
+        return "redirect:/main";
     }
 
     @PostMapping("/user/{login}/doTransfer")
-    public void doTransfer(@PathVariable String login,
+    public String doTransfer(@PathVariable String login,
                            @RequestParam("from_currency") String fromCurrency,
                            @RequestParam("to_currency") String toCurrency,
                            @RequestParam("value") java.math.BigDecimal value,
@@ -86,5 +75,7 @@ public class OperationController {
         restTemplate.postForEntity(properties.getGatewayBaseUrl() + "/transfer/user/" + login + "/doTransfer",
                 new org.springframework.http.HttpEntity<>(form, headers),
                 Void.class);
+
+        return "redirect:/main";
     }
 }

@@ -28,9 +28,6 @@ public class CashAccount {
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @Version
-    private Long version;
-
     @PrePersist
     public void prePersist() {
         if (id == null) id = UUID.randomUUID();

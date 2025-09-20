@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     @Bean
-    @LoadBalanced
     public RestTemplate restTemplate() {
         RestTemplate rt = new RestTemplate();
         rt.getInterceptors().add((req, body, exec) -> {

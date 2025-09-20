@@ -24,9 +24,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/hello", "/signup", "/accounts/signup", "/loadUser").permitAll()
-                                .requestMatchers("/user/**").hasAuthority("SCOPE_front_ui")
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt());
+                                .requestMatchers("/user/**").permitAll()
+                );
         return http.build();
     }
     @Bean

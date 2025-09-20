@@ -29,8 +29,19 @@ data:
             registration:
               front_ui_client:
                 client-id: front_ui_client
-                client-secret: OV5Wdi0Vtf1VDWJpw3eSFjvDKLFNqPjq
+                client-secret: eq9i8vJPf33zfDNsnVfKTlGV6eylWWqO
                 scope: front_ui
                 authorization-grant-type: client_credentials
+      kafka:
+        bootstrap-servers: "http://kafka:9092"
+        consumer:
+          group-id: notifications
+          auto-offset-reset: earliest
+          enable-auto-commit: false
+        listener:
+          ack-mode: MANUAL_IMMEDIATE
+    topics:
+      exchange:
+        topic: exchange.rates
     shared:
       gatewayBaseUrl: "http://{{ .Release.Name }}.192.168.49.2.nip.io"

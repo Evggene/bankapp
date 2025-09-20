@@ -19,9 +19,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(reg -> reg
                         .requestMatchers("/actuator").permitAll()
-                        .requestMatchers("/**").hasAuthority("SCOPE_front_ui")
-                )
-                .oauth2ResourceServer(o -> o.jwt());
+                        .requestMatchers("/**").permitAll());
         return http.build();
     }
 

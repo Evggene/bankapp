@@ -33,7 +33,7 @@ public class CashService {
         if (!allowedByBlocker(login, "GET", currency, amount)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Operation blocked by policy (every 2nd)");
         }
-        CashAccount acc = repo.findByUsernameAndCurrency(login, currency)
+        var acc = repo.findByUsernameAndCurrency(login, currency)
                 .orElseGet(() -> repo.save(
                         CashAccount.builder()
                                 .username(login)

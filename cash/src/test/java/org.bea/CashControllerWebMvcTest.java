@@ -5,6 +5,7 @@ import org.bea.controller.CashController;
 import org.bea.domain.dto.CashBalanceResponse;
 import org.bea.domain.dto.CashFormRequest;
 import org.bea.service.CashService;
+import org.bea.service.NotificationProducer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +37,8 @@ class CashControllerWebMvcTest {
     CashService cashService;
     @MockBean
     RestTemplate restTemplate;
+    @MockBean
+    NotificationProducer notificationProducer;
 
     @Test
     void post_getCash_putAction_callsDeposit_andReturnsJson() throws Exception {
