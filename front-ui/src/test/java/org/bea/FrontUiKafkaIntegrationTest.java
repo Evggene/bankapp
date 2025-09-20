@@ -24,11 +24,11 @@ import java.util.function.Supplier;
         "spring.kafka.consumer.auto-offset-reset=earliest",
         "spring.kafka.consumer.enable-auto-commit=false",
         "spring.kafka.listener.ack-mode=MANUAL_IMMEDIATE",
-        "topics.notifications.topic=test",
+        "topics.exchange.topic=exchange.rates",
         "generator.scheduler.enabled=false",
         "auth.client.enabled=false"
 })
-@EmbeddedKafka(partitions = 1, topics = "test")
+@EmbeddedKafka(partitions = 1, topics = "exchange.rates")
 class FrontUiKafkaIntegrationTest {
     @Autowired
     private org.springframework.kafka.core.KafkaTemplate<String, String> kafkaTemplate;
@@ -49,7 +49,7 @@ class FrontUiKafkaIntegrationTest {
       ]
       """;
 
-        kafkaTemplate.send("test", "batch-1", payload);
+        kafkaTemplate.send("exchange.rates", "batch-1", payload);
 
         org.awaitility.Awaitility.await()
                 .atMost(java.time.Duration.ofSeconds(10))

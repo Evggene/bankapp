@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @AutoConfigureMockMvc
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, topics = "exchange.rates")
+@EmbeddedKafka(partitions = 1, topics = "notifications.events")
 class CashKafkaTest {
 
     @Autowired MockMvc mockMvc;
@@ -83,7 +83,7 @@ class CashKafkaTest {
         consumer = new org.springframework.kafka.core.DefaultKafkaConsumerFactory<>(
                 props, new StringDeserializer(), new StringDeserializer())
                 .createConsumer();
-        broker.consumeFromAnEmbeddedTopic(consumer, "exchange.rates");
+        broker.consumeFromAnEmbeddedTopic(consumer, "notifications.events");
 
         mockMvc.perform(post("/user/testUser/getCash")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -98,7 +98,8 @@ class CashKafkaTest {
                 .andExpect(jsonPath("$.message").value("Deposited"));
 
         ConsumerRecord<String, String> rec =
-                KafkaTestUtils.getSingleRecord(consumer, "exchange.rates");
+                KafkaTestUtils.getSingleRecord(consumer, "notifications.events");
+
         JsonNode json = new ObjectMapper().readTree(rec.value());
         assertThat(json.get("operation").asText()).isEqualTo("Пополнение");
         assertThat(json.get("login").asText()).isEqualTo("testUser");

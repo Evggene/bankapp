@@ -36,7 +36,7 @@ spring:
 
   topics:
     notifications:
-      topic: "notifications.event"
+      topic: "notifications.events"
 
 resilience4j:
   retry:

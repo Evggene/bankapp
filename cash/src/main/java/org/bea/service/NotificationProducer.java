@@ -21,6 +21,6 @@ public class NotificationProducer {
     }
 
     public void sendMessage(NotificationDto notification) {
-        kafkaTemplate.send("notifications.event", notification.toJson());
+        kafkaTemplate.send("notifications.events", notification.toJson());
     }
 }

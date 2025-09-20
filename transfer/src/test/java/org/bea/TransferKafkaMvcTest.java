@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @AutoConfigureMockMvc
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, topics = "exchange.rates")
+@EmbeddedKafka(partitions = 1, topics = "notifications.events")
 class TransferKafkaMvcTest {
 
     @Autowired MockMvc mockMvc;
@@ -76,7 +76,7 @@ class TransferKafkaMvcTest {
         consumer = new org.springframework.kafka.core.DefaultKafkaConsumerFactory<>(
                 props, new StringDeserializer(), new StringDeserializer()
         ).createConsumer();
-        broker.consumeFromAnEmbeddedTopic(consumer, "exchange.rates");
+        broker.consumeFromAnEmbeddedTopic(consumer, "notifications.events");
 
         var login = "alice";
         mockMvc.perform(post("/user/{login}/doTransfer", login)
@@ -88,7 +88,7 @@ class TransferKafkaMvcTest {
                         .param("to_login", "bob"))
                 .andExpect(status().isNoContent());
 
-        var rec = KafkaTestUtils.getSingleRecord(consumer, "exchange.rates");
+        var rec = KafkaTestUtils.getSingleRecord(consumer, "notifications.events");
         assertThat(rec.value()).contains("Перевод");
         assertThat(rec.value()).contains("alice", "bob");
         assertThat(rec.value()).contains("USD", "EUR");
