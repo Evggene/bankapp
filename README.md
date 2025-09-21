@@ -8,8 +8,14 @@
 - **Java 17+**
 - **Maven 3.8+**
 - **PostgreSQL 13+**
-- **Consul** (для сервис-дискавери)
 - **Keycloak** (для аутентификации)
+- **Kafka**
+
+## Что нового
+В проект добавлена **Apache Kafka** и реализовано межсервисное взаимодействие через события:
+- **exchange-generator** публикует курсы валют в топик `exchange.rates`
+- **transfer** и **cash** публикуют доменные события в топик `notifications.events`
+- **notifications** подписывается на `notifications.events` и отображает эти события на фронте
 
 ### Сборка
 ```bash
@@ -31,7 +37,6 @@ mvn spring-boot:run
 - Exchange Generator: http://localhost:8050
 - Notifications: http://localhost:8060
 - Transfer: http://localhost:8070
-- Gateway: http://localhost:8100
 - Front-UI: http://localhost:8080
 
 ---
@@ -44,28 +49,8 @@ docker compose up --build
 ```
 
 ### 2. Доступные сервисы
-- **Consul UI** → [http://localhost:8500](http://localhost:8500)
 - **Postgres** → порт 5431, БД bankapp, логин/пароль: user/pass
 - **Keycloak** → [http://localhost:8101](http://localhost:8101), логин/пароль: admin/admin
-- **Gateway** → [http://localhost:8100](http://localhost:8100)
-- **Front-UI** → [http://localhost:8080](http://localhost:8080)
+- **Front-UI** → [http://loca…
 
-### 3. Перезапуск
-```bash
-docker compose down -v
-docker compose up --build -d
-```
-
----
-
-## 🧩 Структура сервисов
-
-- `accounts` — управление аккаунтами
-- `blocker` — блокировка операций
-- `cash` — операции со счетом
-- `exchange` — конвертация валют
-- `exchange-generator` — генерация курсов валют
-- `notifications` — уведомления
-- `transfer` — переводы
-- `gateway` — API Gateway
-- `front-ui` — фронтенд
+</details>
