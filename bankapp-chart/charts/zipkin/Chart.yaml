@@ -1,0 +1,6 @@
+apiVersion: v2
+name: zipkin
+description: Minimal Zipkin deployment for tracing (dev/minikube)
+type: application
+version: 0.1.0
+appVersion: "2"

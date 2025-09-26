@@ -14,7 +14,14 @@ data:
       endpoints:
         web:
           exposure:
-            include: health,info,env,refresh
+            include: health,info
+      tracing:
+        sampling:
+          probability: 1.0
+        export:
+          zipkin:
+            enabled: true
+            endpoint: http://{{ .Release.Name }}-zipkin:9411/api/v2/spans
 
     logging:
       level:

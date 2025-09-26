@@ -45,3 +45,15 @@ data:
         topic: exchange.rates
     shared:
       gatewayBaseUrl: "http://{{ .Release.Name }}.192.168.49.2.nip.io"
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info
+      tracing:
+        sampling:
+          probability: 1.0
+        export:
+          zipkin:
+            enabled: true
+            endpoint: http://{{ .Release.Name }}-zipkin:9411/api/v2/spans

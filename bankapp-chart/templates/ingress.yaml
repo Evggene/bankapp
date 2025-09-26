@@ -100,3 +100,10 @@ spec:
                 name: {{ .Release.Name }}-transfer
                 port:
                   number: {{ index .Values "transfer" "service" "port" | default 8090 }}
+          - path: /zipkin/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Release.Name }}-zipkin
+                port:
+                  number: 9411
