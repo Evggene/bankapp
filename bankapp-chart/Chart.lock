@@ -2,5 +2,8 @@ dependencies:
 - name: kafka
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 32.4.3
-digest: sha256:14bba01fa5d72dbd5392bd56167815541bace03bf6b0f2b2009ab2daedd2c5f5
-generated: "2025-09-16T20:31:48.831440507+07:00"
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 27.39.0
+digest: sha256:1b333301feb1bb53175c585e727e57772ffb6a58f846d763fb12d6028308d272
+generated: "2025-09-28T19:41:33.01820651+07:00"

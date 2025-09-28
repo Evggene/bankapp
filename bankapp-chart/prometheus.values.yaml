@@ -1,0 +1,32 @@
+prometheus:
+  enabled: true
+  server:
+    extraArgs:
+      web.enable-lifecycle: ""
+      log.level: "debug"
+    persistentVolume:
+      enabled: false
+    ingress:
+      enabled: false
+  serverFiles:
+    prometheus.yml:
+      global:
+        scrape_interval: 15s
+        evaluation_interval: 15s
+      scrape_configs:
+        - job_name: prometheus
+          static_configs:
+            - targets:
+                - "localhost:9090"
+        - job_name: spring-boot-services
+          scheme: http
+          metrics_path: /actuator/prometheus
+          kubernetes_sd_configs:
+            - role: endpoints
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+              regex: (accounts|cash|exchange|transfer|notifications|blocker|exchange-generator|front-ui)
+              action: keep
+            - source_labels: [__meta_kubernetes_endpoint_port_name]
+              regex: (http|web|http-metrics)
+              action: keep

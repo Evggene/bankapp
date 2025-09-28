@@ -10,3 +10,7 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     alias: kafka
     condition: kafka.enabled
+  - name: prometheus
+    version: 27.*
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled

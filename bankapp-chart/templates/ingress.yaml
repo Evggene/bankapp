@@ -36,6 +36,13 @@ spec:
                 name: {{ .Release.Name }}-zipkin
                 port:
                   number: 9411
+          - path: /prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-prometheus-server
+                port:
+                  number: 9090
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -107,10 +114,4 @@ spec:
                 name: {{ .Release.Name }}-transfer
                 port:
                   number: {{ index .Values "transfer" "service" "port" | default 8090 }}
-          - path: /zipkin
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}-zipkin
-                port:
-                  number: 9411
+
