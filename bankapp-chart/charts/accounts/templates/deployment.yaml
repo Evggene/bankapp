@@ -27,7 +27,23 @@ spec:
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: "file:/config/"
             - name: JAVA_TOOL_OPTIONS
-              value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+              value: >-
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -Dmanagement.tracing.export.zipkin.enabled=true
+                -Dmanagement.tracing.sampling.probability=1.0
+                -Dmanagement.tracing.export.zipkin.endpoint=http://{{ .Release.Name }}-zipkin:9411/api/v2/spans
+                -Dspring.zipkin.base-url=http://{{ .Release.Name }}-zipkin:9411
+            # (на всякий случай, если где-то в коде читают через ENV)
+            - name: MANAGEMENT_TRACING_EXPORT_ZIPKIN_ENABLED
+              value: "true"
+            - name: MANAGEMENT_TRACING_EXPORT_ZIPKIN_ENDPOINT
+              value: "http://{{ .Release.Name }}-zipkin:9411/api/v2/spans"
+            - name: MANAGEMENT_TRACING_SAMPLING_PROBABILITY
+              value: "1.0"
+            # ✅ отключим возможный OTEL-экспорт по умолчанию на localhost
+            - name: OTEL_TRACES_EXPORTER
+              value: "none"
           volumeMounts:
             - name: app-config
               mountPath: /config
