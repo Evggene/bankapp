@@ -16,7 +16,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(reg -> reg
-                        .requestMatchers("/actuator").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/check").permitAll())
                 .build();
     }

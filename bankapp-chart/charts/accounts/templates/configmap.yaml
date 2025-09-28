@@ -34,7 +34,7 @@ data:
       endpoints:
         web:
           exposure:
-            include: health,info
+            include: "*"
       tracing:
         sampling:
           probability: 1.0
@@ -42,6 +42,10 @@ data:
           zipkin:
             enabled: true
             endpoint: http://{{ .Release.Name }}-zipkin:9411/api/v2/spans
+    
+    logging:
+      pattern:
+        level: "%5p [${spring.application.name:},traceId=%X{traceId},spanId=%X{spanId}]"
     
     keycloak:
       url: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak"

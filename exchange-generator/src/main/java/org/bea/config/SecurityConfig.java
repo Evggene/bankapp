@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/actuator", "/hello").permitAll()
+                                .requestMatchers("/actuator/**", "/hello").permitAll()
                                 .requestMatchers("/getRates").permitAll());
         return http.build();
     }

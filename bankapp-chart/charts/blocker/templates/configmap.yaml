@@ -10,7 +10,7 @@ data:
     spring.application.name=blocker
     logging.level.org.springframework.web=INFO
     server.port={{ .Values.service.port }}
-    management.endpoints.web.exposure.include=health,info
+    management.endpoints.web.exposure.include=*
     management.tracing.sampling.probability=1.0
     management.tracing.export.zipkin.enabled=true
     management.tracing.export.zipkin.endpoint=http://{{ .Release.Name }}-zipkin:9411/api/v2/spans

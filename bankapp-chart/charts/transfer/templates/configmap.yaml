@@ -14,7 +14,7 @@ data:
       endpoints:
         web:
           exposure:
-            include: health,info
+            include: "*"
       tracing:
         sampling:
           probability: 1.0

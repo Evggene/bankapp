@@ -29,6 +29,13 @@ spec:
                 name: {{ printf "%s-keycloak" .Release.Name | quote }}
                 port:
                   number: {{ .Values.keycloak.service.port }}
+          - path: /zipkin
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-zipkin
+                port:
+                  number: 9411
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -100,8 +107,8 @@ spec:
                 name: {{ .Release.Name }}-transfer
                 port:
                   number: {{ index .Values "transfer" "service" "port" | default 8090 }}
-          - path: /zipkin/?(.*)
-            pathType: ImplementationSpecific
+          - path: /zipkin
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-zipkin

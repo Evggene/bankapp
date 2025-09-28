@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/actuator").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers("/**").permitAll());
         return http.build();
     }

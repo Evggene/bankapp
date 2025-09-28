@@ -14,7 +14,7 @@ data:
     spring.kafka.consumer.enable-auto-commit=false
     server.port={{ .Values.service.port }}
     logging.level.org.springframework.web=INFO
-    management.endpoints.web.exposure.include=health,info
+    management.endpoints.web.exposure.include=*
     topics.notifications.topic=notifications.events
     spring.kafka.listener.ack-mode=MANUAL_IMMEDIATE
     management.tracing.sampling.probability=1.0
