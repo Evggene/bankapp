@@ -13,5 +13,5 @@ postgres:
   port: 5432
 
 keycloak:
-  realm: myrealm
+  realm: master
   port: 8101

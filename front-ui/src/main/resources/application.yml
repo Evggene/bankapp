@@ -23,7 +23,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8101/realms/myrealm
+            issuer-uri: http://localhost:8101/realms/master
         registration:
           front_ui_client:
             provider: keycloak

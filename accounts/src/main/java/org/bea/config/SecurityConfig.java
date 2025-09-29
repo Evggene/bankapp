@@ -35,6 +35,6 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder(@Value("${keycloak.url}") String keycloakUrl) {
-        return NimbusJwtDecoder.withJwkSetUri(keycloakUrl + "/realms/myrealm/protocol/openid-connect/certs").build();
+        return NimbusJwtDecoder.withJwkSetUri(keycloakUrl + "/realms/master/protocol/openid-connect/certs").build();
     }
 }

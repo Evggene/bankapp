@@ -25,7 +25,7 @@ data:
           client:
             provider:
               keycloak:
-                issuer-uri: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak/realms/myrealm"
+                issuer-uri: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak/realms/master"
             registration:
               front_ui_client:
                 client-id: front_ui_client
@@ -53,7 +53,6 @@ data:
       tracing:
         sampling:
           probability: 1.0
-        export:
-          zipkin:
-            enabled: true
-            endpoint: http://{{ .Release.Name }}-zipkin:9411/api/v2/spans
+      zipkin:
+        tracing:
+          endpoint: http://{{ .Release.Name }}-zipkin:9411/api/v2/spans

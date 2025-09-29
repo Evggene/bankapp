@@ -17,7 +17,7 @@ config:
     oauth2:
       provider:
         keycloak:
-          issuerUri: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak/realms/myrealm"
+          issuerUri: "http://{{ .Release.Name }}.192.168.49.2.nip.io/keycloak/realms/master"
       registration:
         front_ui_client:
           clientId: "front_ui_client"

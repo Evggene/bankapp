@@ -18,6 +18,5 @@ data:
     topics.notifications.topic=notifications.events
     spring.kafka.listener.ack-mode=MANUAL_IMMEDIATE
     management.tracing.sampling.probability=1.0
-    management.tracing.export.zipkin.enabled=true
-    management.tracing.export.zipkin.endpoint=http://{{ .Release.Name }}-zipkin:9411/api/v2/spans
+    management.zipkin.tracing.endpoint=http://{{ .Release.Name }}-zipkin:9411/api/v2/spans
     logging.pattern.level=%5p [${spring.application.name:},traceId=%X{traceId},spanId=%X{spanId}]

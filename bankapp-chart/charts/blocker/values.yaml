@@ -7,6 +7,6 @@ service:
 resources: {}
 
 keycloak:
-  realm: myrealm
+  realm: master
   port: 8101
 

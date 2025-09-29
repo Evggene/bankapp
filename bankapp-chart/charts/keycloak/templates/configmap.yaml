@@ -6,7 +6,7 @@ metadata:
 data:
   realm-config.json: |
     {
-      "realm": "myrealm",  // Имя реалма, в котором будет создан клиент
+      "realm": "master",  // Имя реалма, в котором будет создан клиент
       "enabled": true,
       "clients": [
         {

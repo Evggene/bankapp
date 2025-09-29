@@ -9,7 +9,7 @@ keycloak:
   host: ""               # if empty -> "<release>-keycloak"
   port: 8101
   relativePath: "/keycloak"
-  realm: myrealm
+  realm: master
 
 postgres:
   database: bankapp
