@@ -1,23 +1,13 @@
-server:
-  global:
-    scrape_interval: 30s      # Интервал сбора метрик
-    evaluation_interval: 30s  # Интервал оценки правил
-    scrape_timeout: 10s       # Тайм-аут сбора метрик
+prometheus:
+  enabled: true
 
-    scrape_configs:
-      - job_name: prometheus
-        static_configs:
-          - targets:
-              - "localhost:9090"
-      - job_name: spring-boot-services
-        scheme: http
-        metrics_path: /actuator/prometheus
-        kubernetes_sd_configs:
-          - role: endpoints
-        relabel_configs:
-          - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
-            regex: (accounts|cash|exchange|transfer|notifications|blocker|exchange-generator|front-ui)
-            action: keep
-          - source_labels: [__meta_kubernetes_endpoint_port_name]
-            regex: (http|web|http-metrics)
-            action: keep
+  server:
+    persistentVolume:
+      enabled: false   # удобно для minikube/отладки
+
+    global:
+      scrape_interval: 30s
+      evaluation_interval: 30s
+      scrape_timeout: 10s
+
+    retention: 2d
