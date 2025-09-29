@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "logstash.fullname" . }}-pipeline
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  pipeline.conf: |
+    input {
+      kafka {
+        bootstrap_servers => "{{ .Values.kafka.bootstrapServers }}"
+        topics            => [{{- range $i, $t := .Values.kafka.topics }}{{ if $i }}, {{ end }}"{{ $t }}"{{- end }}]
+        group_id          => "{{ .Values.kafka.groupId }}"
+        client_id         => "{{ .Values.kafka.clientId }}"
+        consumer_threads  => {{ .Values.kafka.consumerThreads }}
+        auto_offset_reset => "{{ .Values.kafka.autoOffsetReset }}"
+        decorate_events   => true
+        codec             => json
+      }
+    }
+
+    filter {
+      if [timestamp] {
+        date {
+          match  => ["timestamp","ISO8601","yyyy-MM-dd HH:mm:ss,SSS","UNIX_MS"]
+          target => "@timestamp"
+        }
+      }
+      mutate {
+        rename => { "service" => "[service][name]" }
+        rename => { "level"   => "[log][level]" }
+      }
+      if [traceId] { mutate { rename => { "traceId" => "[trace][id]" } } }
+      if [spanId]  { mutate { rename => { "spanId"  => "[span][id]"  } } }
+    }
+
+    output {
+      stdout { codec => rubydebug }
+    }

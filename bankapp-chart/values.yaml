@@ -110,3 +110,13 @@ kafka:
       - name: exchange.rates
         partitions: 1
         replicationFactor: 1
+      - name: bankapp-logs
+        partitions: 1
+        replicationFactor: 1
+
+logstash:
+  enabled: true
+  kafka:
+    bootstrapServers: "kafka:9092"
+    topics:
+      - bankapp-logs

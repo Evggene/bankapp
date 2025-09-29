@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Appenders>
+        <!-- Консоль для локальной отладки -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level [%t] %logger{36} - %msg%n"/>
+        </Console>
+        <!-- Kafka → JSON (одна строка = одно событие) -->
+        <Kafka name="Kafka" topic="${env:LOGS_TOPIC:-bankapp-logs}">
+            <!-- JsonTemplateLayout даёт компактный JSON с MDC -->
+            <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json"
+                                stackTraceEnabled="true"/>
+            <Property name="bootstrap.servers">${env:KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}</Property>
+            <Property name="acks">1</Property>
+            <Property name="linger.ms">50</Property>
+            <Property name="max.in.flight.requests.per.connection">1</Property>
+        </Kafka>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Kafka"/>
+            <!-- Можно оставить консоль для dev; в проде можно убрать -->
+            <AppenderRef ref="Console"/>
+        </Root>
+        <!-- чтобы не засорять логи внутренностями клиента Kafka -->
+        <Logger name="org.apache.kafka" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>

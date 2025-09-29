@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "logstash.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Chart.Name }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Chart.Name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: logstash
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          volumeMounts:
+          - name: pipeline
+            mountPath: /opt/bitnami/logstash/pipeline
+          - name: config
+            mountPath: /opt/bitnami/logstash/config
+      volumes:
+        - name: pipeline
+          configMap:
+            name: "{{ include "logstash.fullname" . }}-pipeline"
+        - name: config
+          configMap:
+            name: "{{ include "logstash.fullname" . }}-config"
