@@ -1,6 +1,7 @@
 package org.bea.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bea.domain.EditPasswordRequest;
 import org.bea.domain.EditUserAccountsRequest;
 import org.bea.domain.SignupRequest;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AccountsController {
 
     private final UserRepository userRepository;
@@ -46,6 +48,7 @@ public class AccountsController {
 
     @GetMapping("/loadUser")
     public User loadUser(@RequestParam(value = "user", required = false) String user) {
+        log.info("load user: {}", user);
         return userRepository.findByUsername(user)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + user));
     }
