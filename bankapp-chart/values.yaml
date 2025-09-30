@@ -2,7 +2,7 @@ global:
   minikubeIp: "192.168.49.2"
   imagePrefix: "ghcr.io/evggene"
   pullPolicy: IfNotPresent
-  tag: "0.0.12-SNAPSHOT"
+  tag: "0.0.13-SNAPSHOT"
 
 ingress:
   enabled: true

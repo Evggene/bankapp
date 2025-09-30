@@ -35,17 +35,14 @@ spec:
             - -lc
             - |
               set -euo pipefail
-              # скопируем базовые конфиги образа в рабочие каталоги
               cp -a /opt/bitnami/logstash/config/. /work-config/
               cp -a /opt/bitnami/logstash/pipeline/. /work-pipeline/ || true
-              # поверх положим наши конфиги из ConfigMap (если заданы ключи)
               if [[ -f /cm-config/logstash.yml ]]; then
                 cp -f /cm-config/logstash.yml /work-config/logstash.yml
               fi
               if [[ -f /cm-pipeline/pipeline.conf ]]; then
                 cp -f /cm-pipeline/pipeline.conf /work-pipeline/pipeline.conf
               fi
-              # права на пользователя 1001 (bitnami)
               chown -R 1001:1001 /work-config /work-pipeline /work-data
           volumeMounts:
             - name: config-raw
@@ -79,18 +76,6 @@ spec:
               mountPath: /opt/bitnami/logstash/pipeline
             - name: data
               mountPath: /opt/bitnami/logstash/data
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 9600
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 9600
-            initialDelaySeconds: 20
-            periodSeconds: 20
 
       volumes:
         # readonly ConfigMap-ы с исходными файлами
