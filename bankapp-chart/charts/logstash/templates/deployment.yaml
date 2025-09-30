@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "logstash.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -14,18 +17,100 @@ spec:
         app.kubernetes.io/name: {{ .Chart.Name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      # Основной контейнер будет под 1001; тома сделаем writable в init-контейнере root
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+
+      # ⬇⬇ Подготовка writable-копий конфигов и pipeline
+      initContainers:
+        - name: prepare-logstash-dirs
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            runAsUser: 0
+          command:
+            - /bin/bash
+            - -lc
+            - |
+              set -euo pipefail
+              # скопируем базовые конфиги образа в рабочие каталоги
+              cp -a /opt/bitnami/logstash/config/. /work-config/
+              cp -a /opt/bitnami/logstash/pipeline/. /work-pipeline/ || true
+              # поверх положим наши конфиги из ConfigMap (если заданы ключи)
+              if [[ -f /cm-config/logstash.yml ]]; then
+                cp -f /cm-config/logstash.yml /work-config/logstash.yml
+              fi
+              if [[ -f /cm-pipeline/pipeline.conf ]]; then
+                cp -f /cm-pipeline/pipeline.conf /work-pipeline/pipeline.conf
+              fi
+              # права на пользователя 1001 (bitnami)
+              chown -R 1001:1001 /work-config /work-pipeline /work-data
+          volumeMounts:
+            - name: config-raw
+              mountPath: /cm-config
+              readOnly: true
+            - name: pipeline-raw
+              mountPath: /cm-pipeline
+              readOnly: true
+            - name: config-w
+              mountPath: /work-config
+            - name: pipeline-w
+              mountPath: /work-pipeline
+            - name: data
+              mountPath: /work-data
+
       containers:
         - name: logstash
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: LS_JAVA_OPTS
+              value: "{{ .Values.javaOpts }}"
+          ports:
+            - name: http
+              containerPort: 9600
+          # Монтируем ПОЛНОСТЬЮ подготовленные каталоги (они теперь writable)
           volumeMounts:
-          - name: pipeline
-            mountPath: /opt/bitnami/logstash/pipeline
-          - name: config
-            mountPath: /opt/bitnami/logstash/config
+            - name: config-w
+              mountPath: /opt/bitnami/logstash/config
+            - name: pipeline-w
+              mountPath: /opt/bitnami/logstash/pipeline
+            - name: data
+              mountPath: /opt/bitnami/logstash/data
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9600
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9600
+            initialDelaySeconds: 20
+            periodSeconds: 20
+
       volumes:
-        - name: pipeline
+        # readonly ConfigMap-ы с исходными файлами
+        - name: config-raw
           configMap:
-            name: "{{ include "logstash.fullname" . }}-pipeline"
-        - name: config
+            name: {{ include "logstash.fullname" . }}-config
+            items:
+                - key: logstash.yml
+                  path: logstash.yml
+        - name: pipeline-raw
           configMap:
-            name: "{{ include "logstash.fullname" . }}-config"
+            name: {{ include "logstash.fullname" . }}-pipeline
+            items:
+                - key: pipeline.conf
+                  path: pipeline.conf
+
+        # writable EmptyDir, в которые копируем и из образа, и из CM
+        - name: config-w
+          emptyDir: {}
+        - name: pipeline-w
+          emptyDir: {}
+        - name: data
+          emptyDir: {}
