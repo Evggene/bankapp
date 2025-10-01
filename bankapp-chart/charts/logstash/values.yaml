@@ -3,8 +3,8 @@ enabled: true
 replicaCount: 1
 
 image:
-  repository: bitnami/logstash
-  tag: "8.12.2"
+  repository: opensearchproject/logstash-oss-with-opensearch-output-plugin
+  tag: "7.16.3"
   pullPolicy: IfNotPresent
 
 service:
@@ -32,3 +32,8 @@ javaOpts: "-Xms256m -Xmx256m"
 prometheus:
   serviceMonitor:
     enabled: false
+
+opensearch:
+  host: opensearch-cluster-master         # если пусто — будет <release>-opensearch
+  port: 9200
+  indexPrefix: "bankapp-logs"

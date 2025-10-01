@@ -36,5 +36,10 @@ data:
     }
 
     output {
+      opensearch {
+        hosts => ["http://{{ if .Values.opensearch.host }}{{ .Values.opensearch.host }}{{ else }}{{ .Release.Name }}-opensearch{{ end }}:{{ .Values.opensearch.port | default 9200 }}"]
+        index => "{{ .Values.opensearch.indexPrefix | default "bankapp-logs" }}-%{+YYYY.MM.dd}"
+        ssl => false
+      }
       stdout { codec => rubydebug }
     }

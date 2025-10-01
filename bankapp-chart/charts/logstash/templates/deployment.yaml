@@ -17,46 +17,11 @@ spec:
         app.kubernetes.io/name: {{ .Chart.Name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      # Основной контейнер будет под 1001; тома сделаем writable в init-контейнере root
+      # Оптимально для образа opensearchproject/logstash-oss-with-opensearch-output-plugin
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
-
-      # ⬇⬇ Подготовка writable-копий конфигов и pipeline
-      initContainers:
-        - name: prepare-logstash-dirs
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            runAsUser: 0
-          command:
-            - /bin/bash
-            - -lc
-            - |
-              set -euo pipefail
-              cp -a /opt/bitnami/logstash/config/. /work-config/
-              cp -a /opt/bitnami/logstash/pipeline/. /work-pipeline/ || true
-              if [[ -f /cm-config/logstash.yml ]]; then
-                cp -f /cm-config/logstash.yml /work-config/logstash.yml
-              fi
-              if [[ -f /cm-pipeline/pipeline.conf ]]; then
-                cp -f /cm-pipeline/pipeline.conf /work-pipeline/pipeline.conf
-              fi
-              chown -R 1001:1001 /work-config /work-pipeline /work-data
-          volumeMounts:
-            - name: config-raw
-              mountPath: /cm-config
-              readOnly: true
-            - name: pipeline-raw
-              mountPath: /cm-pipeline
-              readOnly: true
-            - name: config-w
-              mountPath: /work-config
-            - name: pipeline-w
-              mountPath: /work-pipeline
-            - name: data
-              mountPath: /work-data
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
 
       containers:
         - name: logstash
@@ -68,17 +33,20 @@ spec:
           ports:
             - name: http
               containerPort: 9600
-          # Монтируем ПОЛНОСТЬЮ подготовленные каталоги (они теперь writable)
+
           volumeMounts:
-            - name: config-w
-              mountPath: /opt/bitnami/logstash/config
-            - name: pipeline-w
-              mountPath: /opt/bitnami/logstash/pipeline
-            - name: data
-              mountPath: /opt/bitnami/logstash/data
+            # Смонтировать logstash.yml прямо в стандартный путь
+            - name: config-raw
+              mountPath: /usr/share/logstash/config/logstash.yml
+              subPath: logstash.yml
+              readOnly: true
+            # Смонтировать pipeline.conf прямо в стандартный путь
+            - name: pipeline-raw
+              mountPath: /usr/share/logstash/pipeline/pipeline.conf
+              subPath: pipeline.conf
+              readOnly: true
 
       volumes:
-        # readonly ConfigMap-ы с исходными файлами
         - name: config-raw
           configMap:
             name: {{ include "logstash.fullname" . }}-config
@@ -91,11 +59,3 @@ spec:
             items:
                 - key: pipeline.conf
                   path: pipeline.conf
-
-        # writable EmptyDir, в которые копируем и из образа, и из CM
-        - name: config-w
-          emptyDir: {}
-        - name: pipeline-w
-          emptyDir: {}
-        - name: data
-          emptyDir: {}
