@@ -50,6 +50,13 @@ spec:
                 name: {{ .Release.Name }}-grafana
                 port:
                   number: 3000
+          - path: /dashboards
+            pathType: Prefix
+            backend:
+             service:
+               name: {{ .Release.Name }}-opensearch-dashboards
+               port:
+                 number: 5601
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -121,4 +128,5 @@ spec:
                 name: {{ .Release.Name }}-transfer
                 port:
                   number: {{ index .Values "transfer" "service" "port" | default 8090 }}
+
 

@@ -134,10 +134,10 @@ opensearch:
   resources:
     requests:
       cpu: 100m
-      memory: 1Gi
+      memory: 2Gi
     limits:
       cpu: 500m
-      memory: 2Gi
+      memory: 4Gi
   opensearchJavaOpts: "-Xms512m -Xmx512m"
   roles:
     - master
@@ -148,3 +148,32 @@ opensearch:
     type: ClusterIP
   sysctl:
     enabled: false
+  config:
+    opensearch.yml: |
+      cluster.name: bankapp
+      discovery.type: single-node
+      network.host: 0.0.0.0
+      action.auto_create_index: "*"
+      # Watermarks – поднять пороги для стенда (чтобы не блокировало при 90%)
+      cluster.routing.allocation.disk.threshold_enabled: true
+      cluster.routing.allocation.disk.watermark.low: "95%"
+      cluster.routing.allocation.disk.watermark.high: "97%"
+      cluster.routing.allocation.disk.watermark.flood_stage: "98%"
+
+opensearch-dashboards:
+  enabled: true
+  opensearchHosts: "http://opensearch-cluster-master:9200"
+  service:
+    type: ClusterIP
+    port: 5601
+  ingress:
+    enabled: false
+  extraVolumes:
+    - name: osd-over-conf
+      configMap:
+        name: bankapp-osd-config
+  extraVolumeMounts:
+    - name: osd-over-conf
+      mountPath: /usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
+      subPath: opensearch_dashboards.yml
+      readOnly: true

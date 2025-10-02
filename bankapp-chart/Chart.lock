@@ -1,0 +1,18 @@
+dependencies:
+- name: kafka
+  repository: file://charts/kafka
+  version: 32.4.3
+- name: prometheus
+  repository: file://charts/prometheus
+  version: 27.39.0
+- name: grafana
+  repository: file://charts/grafana
+  version: 8.15.0
+- name: opensearch
+  repository: file://charts/opensearch
+  version: 2.22.0
+- name: opensearch-dashboards
+  repository: https://opensearch-project.github.io/helm-charts/
+  version: 2.22.0
+digest: sha256:c414c289126aea8da54847bed01e459beaec82bfc15ac40504e1affbf4765276
+generated: "2025-10-03T02:06:37.949080663+07:00"
