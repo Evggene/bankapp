@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bea.domain.EditPasswordRequest;
 import org.bea.domain.EditUserAccountsRequest;
 import org.bea.domain.SignupRequest;
+import org.bea.metrics.AccountsMetrics;
 import org.bea.repository.User;
 import org.bea.repository.UserRepository;
 import org.bea.service.UserService;
@@ -27,6 +28,7 @@ public class AccountsController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final AccountsMetrics accountsMetrics;
 
     @GetMapping("/hello")
     public String hello() {
@@ -50,7 +52,14 @@ public class AccountsController {
     public User loadUser(@RequestParam(value = "user", required = false) String user) {
         log.info("load user: {}", user);
         return userRepository.findByUsername(user)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + user));
+                .map(u -> {
+                    accountsMetrics.recordSignup(true);
+                    return u;
+                })
+                .orElseThrow(() -> {
+                    accountsMetrics.recordSignup(false);
+                    return new UsernameNotFoundException("User not found with username: " + user);
+                });
     }
 
     @PostMapping("/user/{login}/editPassword")

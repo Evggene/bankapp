@@ -1,6 +1,7 @@
 package org.bea;
 
 import org.bea.controller.AccountsController;
+import org.bea.metrics.AccountsMetrics;
 import org.bea.repository.UserRepository;
 import org.bea.service.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,8 @@ class AccountsControllerWebMvcTest {
     private PasswordEncoder passwordEncoder;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private AccountsMetrics accountsMetrics;
 
     @Test
     @DisplayName("POST /user/{login}/editPassword передаёт параметры в сервис")
